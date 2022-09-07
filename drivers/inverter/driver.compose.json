@@ -1,0 +1,29 @@
+{
+    "name": {
+        "en": "Inverter"
+    },
+    "class": "other",
+    "capabilities": [
+        "measure_power.solar",
+        "measure_power.grid",
+        "measure_power.battery",
+        "measure_power.consumption"
+    ],
+    "capabilitiesOptions": {
+        "measure_power.solar": {
+            "title": {"en": "Solar Production"}
+        },
+        "measure_power.consumption": {
+            "title": {"en": "Consumption"}
+        },
+        "measure_power.battery": {
+            "title": {"en": "Battery"}
+        },
+        "measure_power.grid": {
+            "title": {"en": "Grid"}
+        }
+    },
+    "$extends": [
+        "lanDriver"
+    ]
+}
