@@ -46,6 +46,28 @@
         "name": "Adrian Rockall",
         "email": "ady@rockall.plus.com"
     },
+    "api": {
+        "getLog": {
+            "method": "get",
+            "path": "/getLog/"
+        },
+        "getDetect": {
+            "method": "get",
+            "path": "/getDetect/"
+        },
+        "clearLog": {
+            "method": "post",
+            "path": "/clearLog/"
+        },
+        "sendLog": {
+            "method": "post",
+            "path": "/sendLog/"
+        },
+        "sendCmd": {
+            "method": "post",
+            "path": "/sendCmd/"
+        }
+    },
     "contributors": {
         "developers": [
             {

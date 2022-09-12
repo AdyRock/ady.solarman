@@ -1,0 +1,12 @@
+{
+    "type": "number",
+    "title": {
+        "en": "Frequency"
+    },
+    "units": {
+      "en": "Hz"
+    },
+    "getable": true,
+    "setable": false,
+    "icon": "/assets/wave.svg"
+}

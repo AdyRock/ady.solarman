@@ -11,6 +11,7 @@ if (process.env.DEBUG === '1')
 const Homey = require('homey');
 const { OAuth2App } = require('homey-oauth2app');
 const SolarmanOAuth2Client = require('./lib/SolarmanOAuth2Client');
+const nodemailer = require('nodemailer');
 
 const Scanner = require('./lib/scanner');
 const Sensor = require('./lib/sensor');
@@ -37,7 +38,7 @@ class MyApp extends OAuth2App
             {
                 message: promise,
                 stack: reason,
-            });
+            }, 0);
         });
 
         this.diagLog = '';
@@ -88,7 +89,7 @@ class MyApp extends OAuth2App
 
     async scannerFoundADevice(ip, serial)
     {
-        this.updateLog(`Found Inverter: : ${ip}, ${serial}`);
+        this.updateLog(`Found Inverter: : ${ip}, ${serial}`, 0);
         this.registerSensor(ip, serial);
 
         if (this.lanSensorTimer === null)
@@ -110,8 +111,8 @@ class MyApp extends OAuth2App
             {
                 const serial = sensor.getSerial();
 
-                //console.log('INVERTER SENSORS: ', serial, result);
-
+                this.updateLog(`Inverter data: : ${serial}, ${this.varToString(result)}`);
+    
                 const drivers = this.homey.drivers.getDrivers();
                 for (const driver in drivers)
                 {
@@ -153,7 +154,18 @@ class MyApp extends OAuth2App
 
     getDiscoveredInverters()
     {
-        return this.inverters;
+        return this.lanSensors;
+    }
+
+    async GetRegisterValue(register)
+    {
+        if (this.lanSensors.length > 0)
+        {
+            let registerNumber = parseInt(register);
+            return await this.lanSensors[0].getRegisterValue(registerNumber, registerNumber, 3);
+        }
+
+        return 'No inverter available';
     }
 
     async onUninit() {}
@@ -218,34 +230,125 @@ class MyApp extends OAuth2App
 
     updateLog(newMessage, errorLevel = 1)
     {
-        const zeroPad = (num, places) => String(num).padStart(places, '0');
-
-        if (errorLevel <= this.homey.app.logLevel)
+        this.log(newMessage);
+        if (errorLevel === 0)
         {
-            const nowTime = new Date(Date.now());
+            this.error(newMessage);
+        }
 
-            this.diagLog += '\r\n* ';
-            this.diagLog += nowTime.toJSON();
-            this.diagLog += '\r\n';
-
-            if (errorLevel === 0)
+        if ((errorLevel === 0) || this.homey.settings.get('logEnabled'))
+        {
+            try
             {
-                this.error(newMessage);
-                this.diagLog += '!!!!!! ';
+                const nowTime = new Date(Date.now());
+
+                this.diagLog += '\r\n* ';
+                this.diagLog += nowTime.toJSON();
+                this.diagLog += '\r\n';
+
+                this.diagLog += newMessage;
+                this.diagLog += '\r\n';
+                if (this.diagLog.length > 60000)
+                {
+                    this.diagLog = this.diagLog.substr(this.diagLog.length - 60000);
+                }
+
+                if (!this.cloudOnly)
+                {
+                    this.homey.api.realtime('ady.Solarman.logupdated', { log: this.diagLog });
+                }
+            }
+            catch (err)
+            {
+                this.log(err);
+            }
+        }
+    }
+
+    // Send the log to the developer (not applicable to Homey cloud)
+    async sendLog(body)
+    {
+        let tries = 5;
+
+        let logData;
+        if (body.logType === 'diag')
+        {
+            logData = this.diagLog;
+        }
+        else
+        {
+            logData = JSON.parse(this.detectedDevices);
+            if (logData)
+            {
+                let gNum = 1;
+                for (const gateway of logData)
+                {
+                    // rename the gateway ID
+                    gateway.gatewayId = `GateWay ${gNum}`;
+                    gNum++;
+
+                    let vNum = 1;
+                    for (const tapLinker of gateway.taplinker)
+                    {
+                        tapLinker.taplinkerId = `tapLinker ${vNum}`;
+                        vNum++;
+                    }
+                }
             }
             else
             {
-                this.log(newMessage);
-                this.diagLog += '* ';
+                throw (new Error('No data to send'));
             }
-            this.diagLog += newMessage;
-            this.diagLog += '\r\n';
-            if (this.diagLog.length > 60000)
-            {
-                this.diagLog = this.diagLog.substr(this.diagLog.length - 60000);
-            }
-            this.homey.api.realtime('com.Solarman.logupdated', { log: this.diagLog });
+
+            logData = this.varToString(logData);
         }
+
+        while (tries-- > 0)
+        {
+            try
+            {
+                // create reusable transporter object using the default SMTP transport
+                const transporter = nodemailer.createTransport(
+                {
+                    host: Homey.env.MAIL_HOST, // Homey.env.MAIL_HOST,
+                    port: 465,
+                    ignoreTLS: false,
+                    secure: true, // true for 465, false for other ports
+                    auth:
+                    {
+                        user: Homey.env.MAIL_USER, // generated ethereal user
+                        pass: Homey.env.MAIL_SECRET, // generated ethereal password
+                    },
+                    tls:
+                    {
+                        // do not fail on invalid certs
+                        rejectUnauthorized: false,
+                    },
+                }, );
+
+                // send mail with defined transport object
+                const info = await transporter.sendMail(
+                {
+                    from: `"Homey User" <${Homey.env.MAIL_USER}>`, // sender address
+                    to: Homey.env.MAIL_RECIPIENT, // list of receivers
+                    subject: `LinkTap ${body.logType} log (${Homey.manifest.version})`, // Subject line
+                    text: logData, // plain text body
+                }, );
+
+                this.updateLog(`Message sent: ${info.messageId}`);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+                // Preview only available when sending through an Ethereal account
+                this.log('Preview URL: ', nodemailer.getTestMessageUrl(info));
+                return this.homey.__('settings.logSent');
+            }
+            catch (err)
+            {
+                this.updateLog(`Send log error: ${err.message}`, 0);
+            }
+        }
+
+        return (this.homey.__('settings.logSendFailed'));
     }
 
     async Delay(period)

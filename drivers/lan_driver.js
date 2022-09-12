@@ -7,7 +7,7 @@ const { Driver } = require('homey');
 class LanDriver extends Driver
 {
 
-    async getLanDevices()
+    async getLanDevices(Type)
     {
         const inverters = this.homey.app.getDiscoveredInverters();
 
@@ -20,13 +20,14 @@ class LanDriver extends Driver
             {
                 let data = {};
                 data = {
-                    id: device.serial
+                    id: device.inverter_sn,
+                    type: Type,
                 };
 
                 // Add this device to the table
                 devices.push(
                 {
-                    name: device.serial.toString(),
+                    name: device.inverter_sn.toString(),
                     data,
                 }, );
             }

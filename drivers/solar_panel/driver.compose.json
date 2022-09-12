@@ -1,0 +1,22 @@
+{
+    "name": {
+        "en": "Local Solar Panel"
+    },
+    "class": "solarpanel",
+    "capabilities": [
+        "measure_power",
+        "meter_power.today",
+        "meter_power"
+    ],
+    "capabilitiesOptions": {
+        "meter_power.today": {
+            "title": {"en": "Today"}
+        },
+        "meter_power": {
+            "title": {"en": "Total"}
+        }
+    },
+    "$extends": [
+        "lanDriver"
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "name": {
+        "en": "Local Grid"
+    },
+    "class": "sensor",
+    "capabilities": [
+        "measure_power",
+        "measure_voltage",
+        "measure_current",
+        "measure_frequency",
+        "meter_power.today_import",
+        "meter_power.today_export",
+        "meter_power.total_import",
+        "meter_power.total_export"
+    ],
+    "capabilitiesOptions": {
+        "meter_power.today_import": {
+            "title": {"en": "Import Today"}
+        },
+        "meter_power.today_export": {
+            "title": {"en": "Export Today"}
+        },
+        "meter_power.total_import": {
+            "title": {"en": "Import Total"}
+        },
+        "meter_power.total_export": {
+            "title": {"en": "Export Total"}
+        }
+    },
+    "energy": {
+        "cumulative": true
+    },
+    "$extends": [
+        "lanDriver"
+    ]
+}

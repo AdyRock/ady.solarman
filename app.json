@@ -1,6 +1,6 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
-  "id": "ady.solarman.cloud",
+  "id": "ady.solarman",
   "version": "0.0.1",
   "compatibility": ">=6.0.0",
   "platforms": [
@@ -47,6 +47,28 @@
     "name": "Adrian Rockall",
     "email": "ady@rockall.plus.com"
   },
+  "api": {
+    "getLog": {
+      "method": "get",
+      "path": "/getLog/"
+    },
+    "getDetect": {
+      "method": "get",
+      "path": "/getDetect/"
+    },
+    "clearLog": {
+      "method": "post",
+      "path": "/clearLog/"
+    },
+    "sendLog": {
+      "method": "post",
+      "path": "/sendLog/"
+    },
+    "sendCmd": {
+      "method": "post",
+      "path": "/sendCmd/"
+    }
+  },
   "contributors": {
     "developers": [
       {
@@ -76,13 +98,79 @@
           "template": "add_devices"
         }
       ],
+      "icon": "/drivers/grid/assets/icon.svg",
+      "images": {
+        "large": "/drivers/grid/assets/images/large.jpg",
+        "small": "/drivers/grid/assets/images/small.jpg"
+      },
+      "name": {
+        "en": "Local Grid"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_power",
+        "measure_voltage",
+        "measure_current",
+        "measure_frequency",
+        "meter_power.today_import",
+        "meter_power.today_export",
+        "meter_power.total_import",
+        "meter_power.total_export"
+      ],
+      "capabilitiesOptions": {
+        "meter_power.today_import": {
+          "title": {
+            "en": "Import Today"
+          }
+        },
+        "meter_power.today_export": {
+          "title": {
+            "en": "Export Today"
+          }
+        },
+        "meter_power.total_import": {
+          "title": {
+            "en": "Import Total"
+          }
+        },
+        "meter_power.total_export": {
+          "title": {
+            "en": "Export Total"
+          }
+        }
+      },
+      "energy": {
+        "cumulative": true
+      },
+      "id": "grid"
+    },
+    {
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
       "icon": "/drivers/inverter/assets/icon.svg",
       "images": {
         "large": "/drivers/inverter/assets/images/large.jpg",
         "small": "/drivers/inverter/assets/images/small.jpg"
       },
       "name": {
-        "en": "Inverter"
+        "en": "Local Inverter"
       },
       "class": "other",
       "capabilities": [
@@ -114,6 +202,54 @@
         }
       },
       "id": "inverter"
+    },
+    {
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "icon": "/drivers/solar_panel/assets/icon.svg",
+      "images": {
+        "large": "/drivers/solar_panel/assets/images/large.jpg",
+        "small": "/drivers/solar_panel/assets/images/small.jpg"
+      },
+      "name": {
+        "en": "Local Solar Panel"
+      },
+      "class": "solarpanel",
+      "capabilities": [
+        "measure_power",
+        "meter_power.today",
+        "meter_power"
+      ],
+      "capabilitiesOptions": {
+        "meter_power.today": {
+          "title": {
+            "en": "Today"
+          }
+        },
+        "meter_power": {
+          "title": {
+            "en": "Total"
+          }
+        }
+      },
+      "id": "solar_panel"
     },
     {
       "platforms": [
@@ -152,7 +288,7 @@
         "small": "/drivers/station/assets/images/small.jpg"
       },
       "name": {
-        "en": "Station"
+        "en": "Cloud Station"
       },
       "class": "other",
       "capabilities": [
@@ -239,6 +375,18 @@
     }
   ],
   "capabilities": {
+    "measure_frequency": {
+      "type": "number",
+      "title": {
+        "en": "Frequency"
+      },
+      "units": {
+        "en": "Hz"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/wave.svg"
+    },
     "measure_update_time": {
       "type": "string",
       "title": {

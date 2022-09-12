@@ -4,7 +4,7 @@
 
 const LanDriver = require('../lan_driver');
 
-class InverterDriver extends LanDriver
+class GridDriver extends LanDriver
 {
 
     /**
@@ -13,7 +13,7 @@ class InverterDriver extends LanDriver
     async onInit()
     {
         super.onInit();
-        this.log('InverterDriver has been initialized');
+        this.log('GridDriver has been initialized');
     }
 
     /**
@@ -22,9 +22,9 @@ class InverterDriver extends LanDriver
      */
     async onPairListDevices()
     {
-        return this.getLanDevices('inverter');
+        return this.getLanDevices('grid');
     }
 
 }
 
-module.exports = InverterDriver;
+module.exports = GridDriver;
