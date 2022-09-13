@@ -164,65 +164,6 @@
           "template": "add_devices"
         }
       ],
-      "icon": "/drivers/inverter/assets/icon.svg",
-      "images": {
-        "large": "/drivers/inverter/assets/images/large.jpg",
-        "small": "/drivers/inverter/assets/images/small.jpg"
-      },
-      "name": {
-        "en": "Local Inverter"
-      },
-      "class": "other",
-      "capabilities": [
-        "measure_power.solar",
-        "measure_power.grid",
-        "measure_power.battery",
-        "measure_power.consumption"
-      ],
-      "capabilitiesOptions": {
-        "measure_power.solar": {
-          "title": {
-            "en": "Solar Production"
-          }
-        },
-        "measure_power.consumption": {
-          "title": {
-            "en": "Consumption"
-          }
-        },
-        "measure_power.battery": {
-          "title": {
-            "en": "Battery"
-          }
-        },
-        "measure_power.grid": {
-          "title": {
-            "en": "Grid"
-          }
-        }
-      },
-      "id": "inverter"
-    },
-    {
-      "platforms": [
-        "local"
-      ],
-      "connectivity": [
-        "lan"
-      ],
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
       "icon": "/drivers/solar_panel/assets/icon.svg",
       "images": {
         "large": "/drivers/solar_panel/assets/images/large.jpg",
@@ -372,6 +313,65 @@
         }
       ],
       "id": "station"
+    },
+    {
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "icon": "/drivers/summary/assets/icon.svg",
+      "images": {
+        "large": "/drivers/summary/assets/images/large.jpg",
+        "small": "/drivers/summary/assets/images/small.jpg"
+      },
+      "name": {
+        "en": "Local Summary"
+      },
+      "class": "other",
+      "capabilities": [
+        "measure_power.solar",
+        "measure_power.grid",
+        "measure_power.battery",
+        "measure_power.consumption"
+      ],
+      "capabilitiesOptions": {
+        "measure_power.solar": {
+          "title": {
+            "en": "Solar Production"
+          }
+        },
+        "measure_power.consumption": {
+          "title": {
+            "en": "Consumption"
+          }
+        },
+        "measure_power.battery": {
+          "title": {
+            "en": "Battery"
+          }
+        },
+        "measure_power.grid": {
+          "title": {
+            "en": "Grid"
+          }
+        }
+      },
+      "id": "summary"
     }
   ],
   "capabilities": {

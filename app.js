@@ -103,6 +103,8 @@ class MyApp extends OAuth2App
 
     async getInverterData()
     {
+        this.updateLog('Get Data');
+
         for (let sensor of this.lanSensors)
         {
             let result = await sensor.getStatistics();
@@ -126,6 +128,10 @@ class MyApp extends OAuth2App
                         }
                     }
                 }
+            }
+            else
+            {
+                this.updateLog('No Data');
             }
         }
 
