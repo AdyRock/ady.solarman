@@ -43,21 +43,8 @@
 
     <!-- Tab links -->
     <div class="tab">
-        <button class="tablinks" onclick="setPage(event, 'detected')" id="defaultOpen"><span data-i18n="settings.detected"></span></button>
-        <button class="tablinks" onclick="setPage(event, 'log')"><span data-i18n="settings.diagnosticsLog"></span></button>
+        <button class="tablinks" onclick="setPage(event, 'log')" id="defaultOpen"><span data-i18n="settings.diagnosticsLog"></span></button>
         <button class="tablinks" onclick="setPage(event, 'send')">Send Command</button>
-    </div>
-
-    <!-- detected-->
-    <div id="detected" class="tabcontent">
-        <fieldset>
-            <p><button id="sendDetectedLog"><span data-i18n="settings.sendLog"></span></button></p>
-            <p data-i18n="settings.detectedDescription">
-            </p>
-            <div class="field row">
-                <textarea id="detectedDevices"></textarea>
-            </div>
-        </fieldset>
     </div>
 
     <!-- LOG PAGE -->
@@ -98,13 +85,11 @@
         // Create the busy indicator
         var busyi = new busy_indicator(document.getElementById("busybox"), document.querySelector("#busybox div"));
 
-        var detectedDevicesElement = document.getElementById('detectedDevices');
         var diagLogElement = document.getElementById('diagLog');
         var logEnabledElement = document.getElementById('logEnabled');
 
         var clearLogElement = document.getElementById('clearDiagLog');
         var sendDiagLogElement = document.getElementById('sendDiagLog');
-        var sendDetectedElement = document.getElementById('sendDetectedLog');
 
         // Send data tab
         var commandDataElement = document.getElementById( 'commandData' );
@@ -126,14 +111,9 @@
 
             document.getElementById("defaultOpen").click();
 
-            Homey.on('ady.solarman.logupdated', function(data)
+            Homey.on('logupdated', function(data)
             {
                 diagLogElement.value = data.log;
-            });
-
-            Homey.on('ady.solarman.detectedDevicesUpdated', function(data)
-            {
-                detectedDevicesElement.value = data.devices;
             });
 
             Homey.get('logEnabled', function(err, logEnabled)
@@ -154,21 +134,6 @@
                 else
                 {
                     diagLogElement.value = result;
-                }
-            });
-
-            Homey.api('GET', '/getDetect/',
-            {
-                notify: true
-            }, function(err, result)
-            {
-                if (err)
-                {
-                    return Homey.alert(err);
-                }
-                else
-                {
-                    detectedDevicesElement.value = result;
                 }
             });
 
@@ -224,34 +189,6 @@
                     }
                 });
             });
-
-            sendDetectedElement.addEventListener('click', function(e)
-            {
-                Homey.confirm(Homey.__('settings.confirmSend'), null, function(e, ok)
-                {
-                    if (ok)
-                    {
-                        waitCursor(true);
-                        Homey.api('POST', '/sendLog/',
-                        {
-                            notify: true,
-                            logType: "detected"
-                        }, function(err, result)
-                        {
-                            waitCursor(false);
-                            if (err)
-                            {
-                                return Homey.alert(err);
-                            }
-                            else
-                            {
-                                return Homey.alert(result);
-                            }
-                        });
-                    }
-                });
-            });
-
 
             sendCmdElement.addEventListener( 'click', function( e )
             {
@@ -325,12 +262,6 @@
                 // Make the log text area fill the page
                 diagLogElement.setAttribute('cols', diagLogElement.parentElement.clientWidth / 8);
                 diagLogElement.style.height = (window.innerHeight - diagLogElement.offsetTop - 20) + 'px';
-            }
-            else if (tabPage == 'detected')
-            {
-                // Make the detected devices text area fill the page
-                detectedDevicesElement.setAttribute('cols', detectedDevicesElement.parentElement.clientWidth / 8);
-                detectedDevicesElement.style.height = (window.innerHeight - detectedDevicesElement.offsetTop - 20) + 'px';
             }
             else if ( tabPage == 'send' )
             {

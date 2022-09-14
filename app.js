@@ -261,7 +261,7 @@ class MyApp extends OAuth2App
 
                 if (!this.cloudOnly)
                 {
-                    this.homey.api.realtime('ady.Solarman.logupdated', { log: this.diagLog });
+                    this.homey.api.realtime('logupdated', { log: this.diagLog });
                 }
             }
             catch (err)

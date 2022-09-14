@@ -12,12 +12,17 @@
         },
         {
             "start": 524,
-            "end": 531,
+            "end": 534,
             "mb_functioncode": 3
         },
         {
-            "start": 533,
-            "end": 547,
+            "start": 535,
+            "end": 545,
+            "mb_functioncode": 3
+        },
+        {
+            "start": 546,
+            "end": 561,
             "mb_functioncode": 3
         },
         {
@@ -26,8 +31,13 @@
             "mb_functioncode": 3
         },
         {
-            "start": 560,
+            "start": 567,
             "end": 569,
+            "mb_functioncode": 3
+        },
+        {
+            "start": 592,
+            "end": 597,
             "mb_functioncode": 3
         }
     ],
@@ -52,6 +62,60 @@
                     "registers": [
                         536
                     ]
+                },
+                {
+                    "name": "PV1_Voltage",
+                    "uom": "V",
+                    "scale": 0.1,
+                    "rule": 1,
+                    "registers": [
+                        592
+                    ]
+                },
+                {
+                    "name": "PV1_Current",
+                    "uom": "A",
+                    "scale": 0.01,
+                    "rule": 1,
+                    "registers": [
+                        593
+                    ]
+                },
+                {
+                    "name": "PV1_Power",
+                    "uom": "W",
+                    "scale": 10,
+                    "rule": 1,
+                    "registers": [
+                        594
+                    ]
+                },
+                {
+                    "name": "PV2_Voltage",
+                    "uom": "V",
+                    "scale": 0.1,
+                    "rule": 1,
+                    "registers": [
+                        595
+                    ]
+                },
+                {
+                    "name": "PV2_Current",
+                    "uom": "A",
+                    "scale": 0.01,
+                    "rule": 1,
+                    "registers": [
+                        596
+                    ]
+                },
+                {
+                    "name": "PV2_Power",
+                    "uom": "W",
+                    "scale": 10,
+                    "rule": 1,
+                    "registers": [
+                        597
+                    ]
                 }
             ]
         },
@@ -74,6 +138,44 @@
                     "rule": 1,
                     "registers": [
                         528
+                    ]
+                },
+                {
+                    "name": "Battery_Charge_Today",
+                    "uom": "kWh",
+                    "scale": 0.01,
+                    "rule": 1,
+                    "registers": [
+                        548
+                    ]
+                },
+                {
+                    "name": "Battery_Discharge_Today",
+                    "uom": "kWh",
+                    "scale": 0.01,
+                    "rule": 1,
+                    "registers": [
+                        549
+                    ]
+                },
+                {
+                    "name": "Battery_Charge_Total",
+                    "uom": "kWH",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        551,
+                        550
+                    ]
+                },
+                {
+                    "name": "Battery_Discharge_Total",
+                    "uom": "kWh",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        553,
+                        552
                     ]
                 },
                 {
