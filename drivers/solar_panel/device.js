@@ -28,7 +28,7 @@ class SolarPanelDevice extends LanDevice
             {
                 this.setAvailable();
 
-                if (data.PV_Power > 0)
+                if (data.PV_Power)
                 {
                     this.setCapabilityValue('measure_power', data.PV_Power).catch(this.error);
                 }
@@ -40,27 +40,27 @@ class SolarPanelDevice extends LanDevice
                 {
                     this.setCapabilityValue('meter_power', data.Total_Generation).catch(this.error);
                 }
-                if (data.PV1_Power > 0)
+                if (data.PV1_Power)
                 {
                     this.setCapabilityValue('measure_power.pv1', data.PV1_Power).catch(this.error);
                 }
-                if (data.PV1_Voltage > 0)
+                if (data.PV1_Voltage)
                 {
                     this.setCapabilityValue('measure_voltage.pv1', data.PV1_Voltage).catch(this.error);
                 }
-                if (data.PV1_Current > 0)
+                if (data.PV1_Current)
                 {
                     this.setCapabilityValue('measure_current.pv1', data.PV1_Current).catch(this.error);
                 }
-                if (data.PV2_Power > 0)
+                if (data.PV2_Power)
                 {
                     this.setCapabilityValue('measure_power.pv2', data.PV2_Power).catch(this.error);
                 }
-                if (data.PV2_Voltage > 0)
+                if (data.PV2_Voltage)
                 {
                     this.setCapabilityValue('measure_voltage.pv2', data.PV2_Voltage).catch(this.error);
                 }
-                if (data.PV2_Current > 0)
+                if (data.PV2_Current)
                 {
                     this.setCapabilityValue('measure_current.pv2', data.PV2_Current).catch(this.error);
                 }
