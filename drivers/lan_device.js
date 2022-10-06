@@ -1,6 +1,7 @@
 /* jslint node: true */
 
 'use strict';
+
 const { Device } = require('homey');
 
 class LanDevice extends Device
@@ -23,7 +24,7 @@ class LanDevice extends Device
      */
     async onDeleted()
     {
-        //this.homey.app.unregisterHUBPolling();
+        // this.homey.app.unregisterHUBPolling();
 
         this.log('LanDevice has been deleted');
     }
@@ -39,16 +40,6 @@ class LanDevice extends Device
     async onSettings({ oldSettings, newSettings, changedKeys })
     {
         // Called when settings changed
-    }
-
-    async _getLanDeviceValues()
-    {
-        const dd = this.getData();
-        if (this.oAuth2Client)
-        {
-            const data = await this.oAuth2Client.getStationData(dd.id);
-            return data;
-        }
     }
 
 }

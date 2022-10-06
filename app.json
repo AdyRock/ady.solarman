@@ -98,6 +98,96 @@
           "template": "add_devices"
         }
       ],
+      "icon": "/drivers/battery/assets/icon.svg",
+      "images": {
+        "large": "/drivers/battery/assets/images/large.jpg",
+        "small": "/drivers/battery/assets/images/small.jpg"
+      },
+      "name": {
+        "en": "Local Battery"
+      },
+      "class": "solarpanel",
+      "capabilities": [
+        "measure_power",
+        "measure_battery",
+        "meter_power.charge_today",
+        "meter_power.discharge_today",
+        "meter_power.charge_total",
+        "meter_power.discharge_total",
+        "measure_voltage.battery",
+        "measure_current.battery",
+        "measure_temperature.battery",
+        "measure_cycles.battery"
+      ],
+      "capabilitiesOptions": {
+        "meter_power.charge_today": {
+          "title": {
+            "en": "Charge Today"
+          }
+        },
+        "meter_power.discharge_today": {
+          "title": {
+            "en": "Discharge Today"
+          }
+        },
+        "meter_power.charge_total": {
+          "title": {
+            "en": "Charge Total"
+          }
+        },
+        "meter_power.discharge_total": {
+          "title": {
+            "en": "Discharge Total"
+          }
+        },
+        "measure_voltage.battery": {
+          "title": {
+            "en": "Voltage"
+          }
+        },
+        "measure_current.battery": {
+          "title": {
+            "en": "Current"
+          }
+        },
+        "measure_temperature.battery": {
+          "title": {
+            "en": "Temperature"
+          }
+        },
+        "measure_cycles.battery": {
+          "title": {
+            "en": "Cycles"
+          }
+        }
+      },
+      "energy": {
+        "batteries": [
+          "INTERNAL"
+        ]
+      },
+      "id": "battery"
+    },
+    {
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
       "icon": "/drivers/grid/assets/icon.svg",
       "images": {
         "large": "/drivers/grid/assets/images/large.jpg",
@@ -411,6 +501,18 @@
     }
   ],
   "capabilities": {
+    "measure_cycles": {
+      "type": "number",
+      "title": {
+        "en": "Cycles"
+      },
+      "units": {
+        "en": ""
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/wave.svg"
+    },
     "measure_frequency": {
       "type": "number",
       "title": {

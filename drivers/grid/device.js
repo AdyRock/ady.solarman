@@ -6,6 +6,7 @@ const LanDevice = require('../lan_device');
 
 class GridDevice extends LanDevice
 {
+
     /**
      * onInit is called when the device is initialized.
      */
@@ -15,8 +16,6 @@ class GridDevice extends LanDevice
 
         this.log('GridDevice has been initialized');
     }
-
-    async onSettings({ oldSettings, newSettings, changedKeys }) {}
 
     async updateLanDeviceValues(serial, data)
     {
@@ -65,6 +64,7 @@ class GridDevice extends LanDevice
             this.setUnavailable(err.message);
         }
     }
+
 }
 
 module.exports = GridDevice;
