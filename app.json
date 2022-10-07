@@ -106,7 +106,7 @@
       "name": {
         "en": "Local Battery"
       },
-      "class": "solarpanel",
+      "class": "sensor",
       "capabilities": [
         "measure_power",
         "measure_battery",
@@ -164,7 +164,8 @@
       "energy": {
         "batteries": [
           "INTERNAL"
-        ]
+        ],
+        "cumulative": true
       },
       "id": "battery"
     },
