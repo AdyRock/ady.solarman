@@ -4,23 +4,19 @@
     },
     "class": "other",
     "capabilities": [
-        "measure_power.solar",
-        "measure_power.grid",
-        "measure_power.battery",
-        "measure_power.consumption"
+        "measure_power.consumption",
+        "meter_power.today_solar",
+        "meter_power.today_consumption"
     ],
     "capabilitiesOptions": {
-        "measure_power.solar": {
-            "title": {"en": "Solar Production"}
-        },
         "measure_power.consumption": {
-            "title": {"en": "Consumption"}
+            "title": {"en": "Consumption Now"}
         },
-        "measure_power.battery": {
-            "title": {"en": "Battery"}
+        "meter_power.today_solar": {
+            "title": {"en": "Solar Today"}
         },
-        "measure_power.grid": {
-            "title": {"en": "Grid"}
+        "meter_power.today_consumption": {
+            "title": {"en": "Consumption Today"}
         }
     },
     "$extends": [

@@ -36,6 +36,11 @@
             "mb_functioncode": 3
         },
         {
+            "start": 579,
+            "end": 581,
+            "mb_functioncode": 3
+        },
+        {
             "start": 592,
             "end": 597,
             "mb_functioncode": 3
@@ -115,6 +120,25 @@
                     "rule": 1,
                     "registers": [
                         597
+                    ]
+                },
+                {
+                    "name": "Generation_Time_Today",
+                    "uom": "m",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        579
+                    ]
+                },
+                {
+                    "name": "Generation_Time_Total",
+                    "uom": "H",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        581,
+                        580
                     ]
                 }
             ]
@@ -423,16 +447,6 @@
                     "registers": [
                         541,
                         540
-                    ]
-                },
-                {
-                    "name": "Total_Consumption",
-                    "uom": "kWh",
-                    "scale": 0.01,
-                    "rule": 1,
-                    "registers": [
-                        547,
-                        546
                     ]
                 }
             ]

@@ -30,10 +30,9 @@ class InverterDevice extends LanDevice
             {
                 this.setAvailable();
 
-                this.setCapabilityValue('measure_power.solar', data.PV_Power).catch(this.error);
-                this.setCapabilityValue('measure_power.grid', data.Grid_Power * -1).catch(this.error);
-                this.setCapabilityValue('measure_power.battery', data.Battery_Power).catch(this.error);
                 this.setCapabilityValue('measure_power.consumption', data.Consumption).catch(this.error);
+                this.setCapabilityValue('meter_power.today_solar', data.Daily_Production).catch(this.error);
+                this.setCapabilityValue('meter_power.today_consumption', data.Consumed_Today).catch(this.error);
             }
         }
         catch (err)

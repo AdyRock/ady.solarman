@@ -41,6 +41,8 @@ class SolarPanelDevice extends LanDevice
                 this.setCapabilityValue('measure_power.pv2', data.PV2_Power).catch(this.error);
                 this.setCapabilityValue('measure_voltage.pv2', data.PV2_Voltage).catch(this.error);
                 this.setCapabilityValue('measure_current.pv2', data.PV2_Current).catch(this.error);
+                this.setCapabilityValue('measure_generation_time', data.Generation_Time_Today).catch(this.error);
+                this.setCapabilityValue('measure_generation_time_total', data.Generation_Time_Total).catch(this.error);
             }
         }
         catch (err)

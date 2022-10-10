@@ -1,0 +1,12 @@
+{
+    "type": "number",
+    "title": {
+        "en": "Generation Time Total"
+    },
+    "units": {
+      "en": "H"
+    },
+    "getable": true,
+    "setable": false,
+    "icon": "/assets/clock.svg"
+}

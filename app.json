@@ -273,7 +273,9 @@
         "measure_current.pv1",
         "measure_power.pv2",
         "measure_voltage.pv2",
-        "measure_current.pv2"
+        "measure_current.pv2",
+        "measure_generation_time",
+        "measure_generation_time_total"
       ],
       "capabilitiesOptions": {
         "meter_power.today": {
@@ -471,30 +473,24 @@
       },
       "class": "other",
       "capabilities": [
-        "measure_power.solar",
-        "measure_power.grid",
-        "measure_power.battery",
-        "measure_power.consumption"
+        "measure_power.consumption",
+        "meter_power.today_solar",
+        "meter_power.today_consumption"
       ],
       "capabilitiesOptions": {
-        "measure_power.solar": {
-          "title": {
-            "en": "Solar Production"
-          }
-        },
         "measure_power.consumption": {
           "title": {
-            "en": "Consumption"
+            "en": "Consumption Now"
           }
         },
-        "measure_power.battery": {
+        "meter_power.today_solar": {
           "title": {
-            "en": "Battery"
+            "en": "Solar Today"
           }
         },
-        "measure_power.grid": {
+        "meter_power.today_consumption": {
           "title": {
-            "en": "Grid"
+            "en": "Consumption Today"
           }
         }
       },
@@ -525,6 +521,30 @@
       "getable": true,
       "setable": false,
       "icon": "/assets/wave.svg"
+    },
+    "measure_generation_time": {
+      "type": "number",
+      "title": {
+        "en": "Generation Time Today"
+      },
+      "units": {
+        "en": "M"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/clock.svg"
+    },
+    "measure_generation_time_total": {
+      "type": "number",
+      "title": {
+        "en": "Generation Time Total"
+      },
+      "units": {
+        "en": "H"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/clock.svg"
     },
     "measure_update_time": {
       "type": "string",

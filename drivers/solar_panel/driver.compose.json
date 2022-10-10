@@ -12,7 +12,9 @@
         "measure_current.pv1",
         "measure_power.pv2",
         "measure_voltage.pv2",
-        "measure_current.pv2"
+        "measure_current.pv2",
+        "measure_generation_time",
+        "measure_generation_time_total"
     ],
     "capabilitiesOptions": {
         "meter_power.today": {
