@@ -1,6 +1,6 @@
 {
     "id": "ady.solarman",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "compatibility": ">=6.0.0",
     "platforms": [
         "local",
@@ -33,7 +33,7 @@
             }
         }
     },
-    "homeyCommunityTopicId": 42296,
+    "homeyCommunityTopicId": 70830,
     "bugs": {
         "url": "https://github.com/AdyRock/ady.solarman/issues"
     },

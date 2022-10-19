@@ -1,5 +1,8 @@
 {
-  "0.1.0": {
-    "en": "Initial release"
+  "0.0.1": {
+    "en": "First test version"
+  },
+  "0.0.2": {
+    "en": "Updated Forum link"
   }
 }

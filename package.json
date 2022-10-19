@@ -1,6 +1,6 @@
 {
     "name": "ady.solarman",
-    "version": "1.1.13",
+    "version": "0.0.2",
     "description": "Adds support to Homey for Solarman devices",
     "main": "app.js",
     "dependencies": {
@@ -16,14 +16,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/AdyRock/ady.Solarman.cloud.git"
+        "url": "git+https://github.com/AdyRock/ady.Solarman.git"
     },
     "author": "Adrian Rockall",
     "license": "GPL-3.0-only",
     "bugs": {
-        "url": "https://github.com/AdyRock/ady.Solarman.cloud/issues"
+        "url": "https://github.com/AdyRock/ady.Solarman/issues"
     },
-    "homepage": "https://github.com/AdyRock/ady.Solarman.cloud#readme",
+    "homepage": "https://github.com/AdyRock/ady.Solarman#readme",
     "engines": {
         "node": ">=12.16.1"
     }
