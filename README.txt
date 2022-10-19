@@ -1,3 +1,6 @@
-Connect your Solarman devices directly to Homey using BLE or via the cloud and the Solarman Hub.
-Create your own Flows tailored to your needs.
-Wake up with daylight in the morning and close the curtains when it gets dark. Turn on your lights when motion is detected and many more options.
+Monitor all aspects of your SoFar invert in Homey using your LAN or from Solarman via the cloud.
+Create Flows to turn on washing machines, etc, or charge your car at peak generation.
+
+Supported inverters for LAN connection:
+Sofar Hybrid such as HYD3600ES, etc
+

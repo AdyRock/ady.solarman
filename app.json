@@ -10,10 +10,10 @@
   "sdk": 3,
   "brandColor": "#00adfc",
   "name": {
-    "en": "Solarman"
+    "en": "Sofar / Solarman"
   },
   "description": {
-    "en": "React to your solar panels output"
+    "en": "Connect to your Sofar inverted and react to your solar panels output"
   },
   "tags": {
     "en": [
@@ -25,7 +25,7 @@
   "category": [
     "appliances"
   ],
-  "support": "https://github.com/AdyRock/ady.solarman.cloud/issues",
+  "support": "https://github.com/AdyRock/ady.solarman/issues",
   "homepage": "https://www.solarman.com/",
   "contributing": {
     "donate": {
@@ -36,9 +36,9 @@
   },
   "homeyCommunityTopicId": 42296,
   "bugs": {
-    "url": "https://github.com/AdyRock/ady.solarman.cloud/issues"
+    "url": "https://github.com/AdyRock/ady.solarman/issues"
   },
-  "source": "https://github.com/AdyRock/ady.solarman.cloud",
+  "source": "https://github.com/AdyRock/ady.solarman",
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
