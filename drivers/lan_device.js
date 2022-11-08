@@ -12,6 +12,7 @@ class LanDevice extends Device
         try
         {
             await super.onInit();
+            await this.homey.app.startLocalFetch();
         }
         catch (err)
         {

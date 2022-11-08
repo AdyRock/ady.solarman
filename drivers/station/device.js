@@ -45,6 +45,8 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('measure_power.grid', data.wirePower * -1).catch(this.error);
                 this.setCapabilityValue('measure_power.battery', data.batteryPower).catch(this.error);
                 this.setCapabilityValue('measure_power.consumption', data.usePower).catch(this.error);
+                this.setCapabilityValue('meter_power.total', data.generationTotal).catch(this.error);
+                this.setCapabilityValue('measure_battery', data.batterySoc).catch(this.error);
                 this.setCapabilityValue('measure_update_time',this.convertDate(data.lastUpdateTime, settings)).catch(this.error);
             }
         }
@@ -63,12 +65,8 @@ class StationDevice extends HubDevice
             let tz = this.homey.clock.getTimezone();
             let lang = this.homey.i18n.getLanguage();
 
-            let dateZero = new Date(0);
-            let offset = dateZero.toLocaleString(lang, {hour: '2-digit',   hour12: false, timeZone: tz });
-
-            let dataNum = (parseInt(offset) * 60 * 60) + parseInt(date);
-
-            var d = new Date(dataNum * 1000);
+            let date_string = new Date().toLocaleString(lang, { timeZone: tz });   
+            let d = new Date(date_string);
 
             if (settings.timeFormat == "mm_dd")
             {

@@ -4,10 +4,12 @@
     },
     "class": "other",
     "capabilities": [
+        "measure_battery",
         "measure_power.solar",
         "measure_power.grid",
         "measure_power.battery",
         "measure_power.consumption",
+        "meter_power.total",
         "measure_update_time"
     ],
     "capabilitiesOptions": {
@@ -22,6 +24,9 @@
         },
         "measure_power.grid": {
             "title": {"en": "Grid"}
+        },
+        "meter_power.total": {
+            "title": {"en": "Total Production"}
         }
     },
     "settings": [

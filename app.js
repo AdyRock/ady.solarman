@@ -30,6 +30,7 @@ class MyApp extends OAuth2App
     async onOAuth2Init()
     {
         this.log('Solarman has been initialized');
+        this.useLocalDevice = false;
 
         process.on('unhandledRejection', (reason, promise) =>
         {
@@ -87,6 +88,15 @@ class MyApp extends OAuth2App
         this.homey.app.updateLog('************** App has initialised. ***************');
     }
 
+    async startLocalFetch()
+    {
+        if (!this.useLocalDevice)
+        {
+            this.useLocalDevice = true;
+            this.getInverterData();
+        }
+    }
+
     async scannerFoundADevice(ip, serial)
     {
         this.updateLog(`Found Inverter: : ${ip}, ${serial}`, 0);
@@ -103,42 +113,45 @@ class MyApp extends OAuth2App
 
     async getInverterData()
     {
-        this.updateLog('Get Data');
-
-        for (let sensor of this.lanSensors)
+        if (this.useLocalDevice)
         {
-            let result = await sensor.getStatistics();
+            this.updateLog('Get Data');
 
-            if (result !== null)
+            for (let sensor of this.lanSensors)
             {
-                const serial = sensor.getSerial();
+                let result = await sensor.getStatistics();
 
-                this.updateLog(`Inverter data: : ${serial}, ${this.varToString(result)}`);
-    
-                const drivers = this.homey.drivers.getDrivers();
-                for (const driver in drivers)
+                if (result !== null)
                 {
-                    let devices = this.homey.drivers.getDriver(driver).getDevices();
+                    const serial = sensor.getSerial();
 
-                    for (let device of devices)
+                    this.updateLog(`Inverter data: : ${serial}, ${this.varToString(result)}`);
+        
+                    const drivers = this.homey.drivers.getDrivers();
+                    for (const driver in drivers)
                     {
-                        if (device.updateLanDeviceValues)
+                        let devices = this.homey.drivers.getDriver(driver).getDevices();
+
+                        for (let device of devices)
                         {
-                            device.updateLanDeviceValues(serial, result);
+                            if (device.updateLanDeviceValues)
+                            {
+                                device.updateLanDeviceValues(serial, result);
+                            }
                         }
                     }
                 }
+                else
+                {
+                    this.updateLog('No Data');
+                }
             }
-            else
+            
+            this.lanSensorTimer = this.homey.setTimeout(async () =>
             {
-                this.updateLog('No Data');
-            }
+                this.getInverterData();
+            }, 10000);
         }
-
-        this.lanSensorTimer = this.homey.setTimeout(async () =>
-        {
-            this.getInverterData();
-        }, 10000);
     }
 
     registerSensor(ip, serial)
@@ -281,33 +294,6 @@ class MyApp extends OAuth2App
         {
             logData = this.diagLog;
         }
-        else
-        {
-            logData = JSON.parse(this.detectedDevices);
-            if (logData)
-            {
-                let gNum = 1;
-                for (const gateway of logData)
-                {
-                    // rename the gateway ID
-                    gateway.gatewayId = `GateWay ${gNum}`;
-                    gNum++;
-
-                    let vNum = 1;
-                    for (const tapLinker of gateway.taplinker)
-                    {
-                        tapLinker.taplinkerId = `tapLinker ${vNum}`;
-                        vNum++;
-                    }
-                }
-            }
-            else
-            {
-                throw (new Error('No data to send'));
-            }
-
-            logData = this.varToString(logData);
-        }
 
         while (tries-- > 0)
         {
@@ -337,7 +323,7 @@ class MyApp extends OAuth2App
                 {
                     from: `"Homey User" <${Homey.env.MAIL_USER}>`, // sender address
                     to: Homey.env.MAIL_RECIPIENT, // list of receivers
-                    subject: `LinkTap ${body.logType} log (${Homey.manifest.version})`, // Subject line
+                    subject: `Sofar & Solarman ${body.logType} log (${Homey.manifest.version})`, // Subject line
                     text: logData, // plain text body
                 }, );
 
