@@ -29,6 +29,12 @@
             "title": {"en": "Total Production"}
         }
     },
+    "energy": {
+        "batteries": [
+            "INTERNAL"
+        ],
+        "cumulative": true
+    },
     "settings": [
         {
             "id": "timeFormat",

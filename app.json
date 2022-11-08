@@ -397,6 +397,12 @@
           }
         }
       },
+      "energy": {
+        "batteries": [
+          "INTERNAL"
+        ],
+        "cumulative": true
+      },
       "settings": [
         {
           "id": "timeFormat",
