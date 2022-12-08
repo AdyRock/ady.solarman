@@ -53,8 +53,13 @@
             <p data-i18n="settings.diagnosticsLog">
             </p>
             <div class="field row">
-                <label for="logEnabled"><span data-i18n="settings.logEnabled"></span></label>
-                <input id="logEnabled" type="checkbox" value="logEnabled" />
+                <p>
+                    <label for="logEnabled"><span data-i18n="settings.logEnabled"></span></label>
+                    <input id="logEnabled" type="checkbox" value="logEnabled" />
+                    &nbsp &nbsp &nbsp
+                    <label for="logNetEnabled"><span data-i18n="settings.logNetEnabled"></span></label>
+                    <input id="logNetEnabled" type="checkbox" value="logNetEnabled" />
+                </p>
             </div>
         </fieldset>
         <fieldset>
@@ -87,15 +92,16 @@
 
         var diagLogElement = document.getElementById('diagLog');
         var logEnabledElement = document.getElementById('logEnabled');
+        var logNetEnabledElement = document.getElementById('logNetEnabled');
 
         var clearLogElement = document.getElementById('clearDiagLog');
         var sendDiagLogElement = document.getElementById('sendDiagLog');
 
         // Send data tab
-        var commandDataElement = document.getElementById( 'commandData' );
-        var sendCmdElement = document.getElementById( 'sendCmd' );
-        var clearSendElement = document.getElementById( 'clearSend' );
-        var sendResponseElement = document.getElementById( 'sendResponse' );
+        var commandDataElement = document.getElementById('commandData');
+        var sendCmdElement = document.getElementById('sendCmd');
+        var clearSendElement = document.getElementById('clearSend');
+        var sendResponseElement = document.getElementById('sendResponse');
 
         // a method named 'onHomeyReady' must be present in your code
         function onHomeyReady(Homey)
@@ -122,6 +128,12 @@
                 logEnabledElement.checked = logEnabled;
             });
 
+            Homey.get('logNetEnabled', function(err, logNetEnabled)
+            {
+                if (err) return Homey.alert(err);
+                logNetEnabledElement.checked = logNetEnabled;
+            });
+
             Homey.api('GET', '/getLog/',
             {
                 notify: true
@@ -140,6 +152,14 @@
             logEnabledElement.addEventListener('click', function(e)
             {
                 Homey.set('logEnabled', logEnabledElement.checked, function(err)
+                {
+                    if (err) return Homey.alert(err);
+                });
+            });
+
+            logNetEnabledElement.addEventListener('click', function(e)
+            {
+                Homey.set('logNetEnabled', logNetEnabledElement.checked, function(err)
                 {
                     if (err) return Homey.alert(err);
                 });
@@ -190,39 +210,39 @@
                 });
             });
 
-            sendCmdElement.addEventListener( 'click', function( e )
+            sendCmdElement.addEventListener('click', function(e)
             {
-                Homey.api( 'POST', '/sendCmd/',
+                Homey.api('POST', '/sendCmd/',
                 {
                     command: commandDataElement.value,
                     notify: true
-                }, function( err, result )
+                }, function(err, result)
                 {
-                    if ( err )
+                    if (err)
                     {
-                        return Homey.alert( err );
+                        return Homey.alert(err);
                     }
                     else
                     {
-                        sendResponseElement.value = JSON.stringify( result, null, 2 );
+                        sendResponseElement.value = JSON.stringify(result, null, 2);
                     }
-                } );
-            } );
+                });
+            });
 
-            clearSendElement.addEventListener( 'click', function( e )
+            clearSendElement.addEventListener('click', function(e)
             {
-                Homey.set( 'sendResponse', "", function( err )
+                Homey.set('sendResponse', "", function(err)
                 {
-                    if ( err )
+                    if (err)
                     {
-                        return Homey.alert( err );
+                        return Homey.alert(err);
                     }
                     else
                     {
                         sendResponseElement.value = "";
                     }
-                } );
-            } );
+                });
+            });
 
             // Tell Homey we're ready to be displayed
             Homey.ready();
@@ -259,20 +279,26 @@
                     logEnabledElement.checked = logEnabled;
                 });
 
+                Homey.get('logNetEnabled', function(err, logNetEnabled)
+                {
+                    if (err) return Homey.alert(err);
+                    logNetEnabledElement.checked = logNetEnabled;
+                });
+
                 // Make the log text area fill the page
                 diagLogElement.setAttribute('cols', diagLogElement.parentElement.clientWidth / 8);
                 diagLogElement.style.height = (window.innerHeight - diagLogElement.offsetTop - 20) + 'px';
             }
-            else if ( tabPage == 'send' )
+            else if (tabPage == 'send')
             {
-                Homey.get( 'sendResponse', function( err, sendResponse )
+                Homey.get('sendResponse', function(err, sendResponse)
                 {
-                    if ( err ) return Homey.alert( err );
-                    sendResponseElement.value = sendResponse ? JSON.stringify( sendResponse, null, 2 ) : "";
-                } );
+                    if (err) return Homey.alert(err);
+                    sendResponseElement.value = sendResponse ? JSON.stringify(sendResponse, null, 2) : "";
+                });
                 // Make the simulator text box fill the page
-                sendResponseElement.setAttribute( 'cols', sendResponseElement.parentElement.clientWidth / 8 );
-                sendResponseElement.style.height = ( window.innerHeight - sendResponseElement.offsetTop - 40 ) + 'px';
+                sendResponseElement.setAttribute('cols', sendResponseElement.parentElement.clientWidth / 8);
+                sendResponseElement.style.height = (window.innerHeight - sendResponseElement.offsetTop - 40) + 'px';
             }
         }
 

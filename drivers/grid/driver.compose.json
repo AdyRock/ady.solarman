@@ -1,6 +1,6 @@
 {
     "name": {
-        "en": "Local Grid"
+        "en": "Grid (Local)"
     },
     "class": "sensor",
     "capabilities": [

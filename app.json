@@ -368,7 +368,9 @@
         "measure_power.battery",
         "measure_power.consumption",
         "meter_power.total",
-        "measure_update_time"
+        "measure_update_time",
+        "meter_power.total_today",
+        "meter_power.total_yesterday"
       ],
       "capabilitiesOptions": {
         "measure_power.solar": {
@@ -394,6 +396,16 @@
         "meter_power.total": {
           "title": {
             "en": "Total Production"
+          }
+        },
+        "meter_power.total_today": {
+          "title": {
+            "en": "Solar Total Today"
+          }
+        },
+        "meter_power.total_yesterday": {
+          "title": {
+            "en": "Solar Total Yesterday"
           }
         }
       },

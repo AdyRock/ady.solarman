@@ -16,7 +16,7 @@ const nodemailer = require('nodemailer');
 const Scanner = require('./lib/scanner');
 const Sensor = require('./lib/sensor');
 
-const MINIMUM_POLL_INTERVAL = 60; // in Seconds
+const MINIMUM_POLL_INTERVAL = 120; // in Seconds
 class MyApp extends OAuth2App
 {
 
@@ -255,7 +255,7 @@ class MyApp extends OAuth2App
             this.error(newMessage);
         }
 
-        if ((errorLevel === 0) || this.homey.settings.get('logEnabled'))
+        if ((errorLevel === 0) || (((errorLevel & 1) === 1) && this.homey.settings.get('logEnabled')) || (((errorLevel & 2) === 2) && this.homey.settings.get('logNetEnabled')))
         {
             try
             {

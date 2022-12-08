@@ -54,6 +54,16 @@ class HubDevice extends OAuth2Device
         }
     }
 
+    async _getHubHistory()
+    {
+        const dd = this.getData();
+        if (this.oAuth2Client)
+        {
+            const data = await this.oAuth2Client.getStationHistory(dd.id);
+            return data;
+        }
+    }
+
 }
 
 module.exports = HubDevice;

@@ -1,6 +1,6 @@
 {
     "name": {
-        "en": "Local Solar Panel"
+        "en": "Solar Panel (Local)"
     },
     "class": "solarpanel",
     "capabilities": [
