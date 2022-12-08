@@ -13,7 +13,7 @@
     "en": "Sofar / Solarman"
   },
   "description": {
-    "en": "Connect to your Sofar inverted and react to your solar panels output"
+    "en": "Monitor all aspects of your SoFar invert in Homey Pro or from Solarman via the cloud with Homey or Homey Pro."
   },
   "tags": {
     "en": [
@@ -26,7 +26,7 @@
     "appliances"
   ],
   "support": "https://github.com/AdyRock/ady.solarman/issues",
-  "homepage": "https://www.solarman.com/",
+  "homepage": "https://www.solarmanpv.com/",
   "contributing": {
     "donate": {
       "paypal": {
@@ -104,7 +104,7 @@
         "small": "/drivers/battery/assets/images/small.jpg"
       },
       "name": {
-        "en": "Local Battery"
+        "en": "Battery (Local)"
       },
       "class": "sensor",
       "capabilities": [
@@ -195,7 +195,7 @@
         "small": "/drivers/grid/assets/images/small.jpg"
       },
       "name": {
-        "en": "Local Grid"
+        "en": "Grid (Local)"
       },
       "class": "sensor",
       "capabilities": [
@@ -261,7 +261,7 @@
         "small": "/drivers/solar_panel/assets/images/small.jpg"
       },
       "name": {
-        "en": "Local Solar Panel"
+        "en": "Solar Panel (Local)"
       },
       "class": "solarpanel",
       "capabilities": [
@@ -358,7 +358,7 @@
         "small": "/drivers/station/assets/images/small.jpg"
       },
       "name": {
-        "en": "Cloud Station"
+        "en": "Inverter (Cloud)"
       },
       "class": "other",
       "capabilities": [
@@ -494,7 +494,7 @@
         "small": "/drivers/summary/assets/images/small.jpg"
       },
       "name": {
-        "en": "Local Summary"
+        "en": "Summary (Local)"
       },
       "class": "other",
       "capabilities": [
