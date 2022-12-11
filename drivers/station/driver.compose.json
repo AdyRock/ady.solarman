@@ -1,6 +1,6 @@
 {
     "name": {
-        "en": "Inverter (Cloud)"
+        "en": "Solarman Station"
     },
     "class": "other",
     "capabilities": [
@@ -85,10 +85,10 @@
                 {
                     "id": "mm_dd",
                     "label": {
-                        "en": "Short HH:MM mmm DD",
-                        "de": "Kurz HH:MM mmm DD",
-                        "nl": "Kort HH:MM mmm DD",
-                        "it": "Corto HH:MM mmm DD"
+                        "en": "Short HH:MM month DD",
+                        "de": "Kurz HH:MM Monat DD",
+                        "nl": "Kort HH:MM maand DD",
+                        "it": "Corto HH:MM mese DD"
                     }
                 }
             ]

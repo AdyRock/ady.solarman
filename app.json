@@ -195,7 +195,7 @@
         "small": "/drivers/grid/assets/images/small.jpg"
       },
       "name": {
-        "en": "Grid (Local)"
+        "en": "Grid (SoFar)"
       },
       "class": "sensor",
       "capabilities": [
@@ -261,7 +261,7 @@
         "small": "/drivers/solar_panel/assets/images/small.jpg"
       },
       "name": {
-        "en": "Solar Panel (Local)"
+        "en": "Solar Panel (SoFar)"
       },
       "class": "solarpanel",
       "capabilities": [
@@ -358,7 +358,7 @@
         "small": "/drivers/station/assets/images/small.jpg"
       },
       "name": {
-        "en": "Inverter (Cloud)"
+        "en": "Solarman Station"
       },
       "class": "other",
       "capabilities": [
@@ -457,10 +457,10 @@
             {
               "id": "mm_dd",
               "label": {
-                "en": "Short HH:MM mmm DD",
-                "de": "Kurz HH:MM mmm DD",
-                "nl": "Kort HH:MM mmm DD",
-                "it": "Corto HH:MM mmm DD"
+                "en": "Short HH:MM month DD",
+                "de": "Kurz HH:MM Monat DD",
+                "nl": "Kort HH:MM maand DD",
+                "it": "Corto HH:MM mese DD"
               }
             }
           ]
@@ -494,7 +494,7 @@
         "small": "/drivers/summary/assets/images/small.jpg"
       },
       "name": {
-        "en": "Summary (Local)"
+        "en": "Summary (SoFar)"
       },
       "class": "other",
       "capabilities": [
