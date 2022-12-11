@@ -12,7 +12,11 @@
         "meter_power.total",
         "measure_update_time",
         "meter_power.total_today",
-        "meter_power.total_yesterday"
+        "meter_power.total_yesterday",
+        "meter_power.battery_charge_today",
+        "meter_power.battery_charge_yesterday",
+        "meter_power.battery_discharge_today",
+        "meter_power.battery_discharge_yesterday"
     ],
     "capabilitiesOptions": {
         "measure_power.solar": {
@@ -35,6 +39,18 @@
         },
         "meter_power.total_yesterday": {
             "title": {"en": "Solar Total Yesterday"}
+        },
+        "meter_power.battery_charge_today": {
+            "title": {"en": "Charge Today"}
+        },
+        "meter_power.battery_charge_yesterday": {
+            "title": {"en": "Charge Yesterday"}
+        },
+        "meter_power.battery_discharge_today": {
+            "title": {"en": "Discharge Today"}
+        },
+        "meter_power.battery_discharge_yesterday": {
+            "title": {"en": "Discharge Yesterday"}
         }
     },
     "energy": {

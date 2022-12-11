@@ -1,6 +1,6 @@
 {
     "name": {
-        "en": "Battery (Local)"
+        "en": "Battery (SoFar)"
     },
     "class": "sensor",
     "capabilities": [
