@@ -1,6 +1,6 @@
 {
     "id": "ady.solarman",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "compatibility": ">=6.0.0",
     "platforms": [
         "local",
@@ -12,7 +12,7 @@
         "en": "Sofar / Solarman"
     },
     "description": {
-        "en": "Monitor all aspects of your SoFar invert in Homey Pro or from Solarman via the cloud with Homey or Homey Pro."
+        "en": "React to your solar panel output"
     },
     "tags": {
         "en": [

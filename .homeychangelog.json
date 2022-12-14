@@ -10,5 +10,8 @@
   },
   "0.0.4": {
     "en": "Added Solarman history capabilities."
+  },
+  "0.0.5": {
+    "en": "Tidy up for publishing."
   }
 }
