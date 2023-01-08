@@ -18,18 +18,24 @@ class LanDriver extends Driver
             // Create an array of devices
             for (const device of inverters)
             {
-                let data = {};
-                data = {
-                    id: device.inverter_sn,
-                    type: Type,
-                };
-
-                // Add this device to the table
-                devices.push(
+                for (const group of device.inverter.parameter_definition.parameters)
                 {
-                    name: device.inverter_sn.toString(),
-                    data,
-                }, );
+                    if (group.group === Type)
+                    {
+                        let data = {};
+                        data = {
+                            id: device.inverter_sn,
+                            type: Type,
+                        };
+        
+                        // Add this device to the table
+                        devices.push(
+                        {
+                            name: device.inverter_sn.toString(),
+                            data,
+                        }, );        
+                    }
+                }
             }
             return devices;
         }

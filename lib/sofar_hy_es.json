@@ -48,7 +48,7 @@
     ],
     "parameters": [
         {
-            "group": "solar",
+            "group": "panel",
             "items": [
                 {
                     "name": "PV_Power",
@@ -144,7 +144,7 @@
             ]
         },
         {
-            "group": "Battery",
+            "group": "battery",
             "items": [
                 {
                     "name": "Battery_Power",
@@ -241,7 +241,7 @@
             ]
         },
         {
-            "group": "Grid",
+            "group": "grid",
             "items": [
                 {
                     "name": "Grid_Power",
@@ -320,8 +320,46 @@
             ]
         },
         {
-            "group": "Inverter",
+            "group": "inverter",
             "items": [
+                {
+                    "name": "Consumption",
+                    "uom": "W",
+                    "scale": 10,
+                    "rule": 1,
+                    "registers": [
+                        531
+                    ]
+                },
+                {
+                    "name": "Consumed_Today",
+                    "uom": "kWh",
+                    "scale": 0.01,
+                    "rule": 1,
+                    "registers": [
+                        539
+                    ]
+                },
+                {
+                    "name": "Total_Consumption",
+                    "uom": "kWh",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        547,
+                        546
+                    ]
+                },
+                {
+                    "name": "Total_Generation",
+                    "uom": "kWh",
+                    "scale": 1,
+                    "rule": 1,
+                    "registers": [
+                        541,
+                        540
+                    ]
+                },
                 {
                     "name": "Inverter_Status",
                     "uom": "",
@@ -386,7 +424,7 @@
             ]
         },
         {
-            "group": "Emergency_Power",
+            "group": "emergency_power",
             "items": [
                 {
                     "name": "Emergency_Voltage",
@@ -404,49 +442,6 @@
                     "rule": 1,
                     "registers": [
                         535
-                    ]
-                }
-            ]
-        },
-        {
-            "group": "House",
-            "items": [
-                {
-                    "name": "Consumption",
-                    "uom": "W",
-                    "scale": 10,
-                    "rule": 1,
-                    "registers": [
-                        531
-                    ]
-                },
-                {
-                    "name": "Consumed_Today",
-                    "uom": "kWh",
-                    "scale": 0.01,
-                    "rule": 1,
-                    "registers": [
-                        539
-                    ]
-                },
-                {
-                    "name": "Total_Consumption",
-                    "uom": "kWh",
-                    "scale": 1,
-                    "rule": 1,
-                    "registers": [
-                        547,
-                        546
-                    ]
-                },
-                {
-                    "name": "Total_Generation",
-                    "uom": "kWh",
-                    "scale": 1,
-                    "rule": 1,
-                    "registers": [
-                        541,
-                        540
                     ]
                 }
             ]

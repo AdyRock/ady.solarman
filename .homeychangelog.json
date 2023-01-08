@@ -13,5 +13,8 @@
   },
   "0.0.5": {
     "en": "Tidy up for publishing."
+  },
+  "0.0.6": {
+    "en": "Added support for lsw inverters."
   }
 }

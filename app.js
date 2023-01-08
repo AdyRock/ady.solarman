@@ -19,7 +19,6 @@ const Sensor = require('./lib/sensor');
 const MINIMUM_POLL_INTERVAL = 120; // in Seconds
 class MyApp extends OAuth2App
 {
-
     static OAUTH2_CLIENT = SolarmanOAuth2Client; // Default: OAuth2Client
     static OAUTH2_DEBUG = true; // Default: false
     static OAUTH2_MULTI_SESSION = false; // Default: false
@@ -100,7 +99,7 @@ class MyApp extends OAuth2App
     async scannerFoundADevice(ip, serial)
     {
         this.updateLog(`Found Inverter: : ${ip}, ${serial}`, 0);
-        this.registerSensor(ip, serial);
+        await this.registerSensor(ip, serial);
 
         if (this.lanSensorTimer === null)
         {
@@ -154,7 +153,7 @@ class MyApp extends OAuth2App
         }
     }
 
-    registerSensor(ip, serial)
+    async registerSensor(ip, serial)
     {
         for (let sensor of this.lanSensors)
         {
@@ -167,13 +166,57 @@ class MyApp extends OAuth2App
             }
         }
 
-        let sensor = new Sensor(serial, ip, 8899, 1, 'sofar_hy_es');
-        this.lanSensors.push(sensor);
+        // let sensor = new Sensor(serial, ip, 8899, 1, 'sofar_hy_es');
+        let sensor = await this.checkSensor(ip, serial, 14, 'sofar_lsw3');
+        if (sensor === null)
+        {
+            sensor = await this.checkSensor(ip, serial, 524, 'sofar_hy_es');
+        }
+
+        if (sensor)
+        {
+            this.lanSensors.push(sensor);
+        }
+    }
+
+    async checkSensor( ip, serial, register, lookup_file )
+    {
+        let sensor = new Sensor(serial, ip, 8899, 1, lookup_file);
+        try
+        {
+            let frequency = await sensor.getRegisterValue(register, register, 3);
+            if ((frequency < 4500) || (frequency > 6500))
+            {
+                return null;
+            }
+        }
+        catch (err)
+        {
+            return null;
+        }
+
+        return sensor;
     }
 
     getDiscoveredInverters()
     {
         return this.lanSensors;
+    }
+
+    getInverter(serial)
+    {
+        if (this.lanSensors.length > 0)
+        {
+            for (const inverter of this.lanSensors)
+            {
+                if (inverter.inverter_sn === serial)
+                {
+                    return inverter;
+                }
+            }
+        }
+
+        return null;
     }
 
     async GetRegisterValue(register)

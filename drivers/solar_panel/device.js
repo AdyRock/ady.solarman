@@ -13,8 +13,45 @@ class SolarPanelDevice extends LanDevice
     async onInit()
     {
         await super.onInit();
+        this.sumPV1_PV2 = false;
 
         this.log('SolarPanelDevice has been initialized');
+    }
+
+    checkCapabilities(serial)
+    {
+        const inverter = this.homey.app.getInverter(serial);
+        if (inverter)
+        {
+            for (const group of inverter.inverter.parameter_definition.parameters)
+            {
+                if (group.group === 'grid')
+                {
+                    if (!group.items.find(element => element.name === 'PV_Power'))
+                    {
+                        this.sumPV1_PV2 = true;
+                    }
+
+                    if (this.hasCapability('meter_power.today'))
+                    {
+                        if (!group.items.find(element => element.name === 'Daily_Production'))
+                        {
+                            this.removeCapability('meter_power.today');
+                        }
+                    }
+
+                    if (this.hasCapability('meter_power'))
+                    {
+                        if (!group.items.find(element => element.name === 'Total_Generation'))
+                        {
+                            this.removeCapability('meter_power.today');
+                        }
+                    }
+
+                    this.CapabilitiesChecked = true;                    
+                }
+            }
+        }
     }
 
     async updateLanDeviceValues(serial, data)
@@ -25,12 +62,29 @@ class SolarPanelDevice extends LanDevice
 
             if (serial === dd.id)
             {
+                if (!this.CapabilitiesChecked)
+                {
+                    this.checkCapabilities(dd.id);
+                    this.CapabilitiesChecked = true;
+                }
+
                 this.setAvailable();
 
-                this.setCapabilityValue('measure_power', data.PV_Power).catch(this.error);
-                this.setCapabilityValue('meter_power.today', data.Daily_Production).catch(this.error);
+                if (this.sumPV1_PV2)
+                {
+                    this.setCapabilityValue('measure_power', data.PV1_Power + data.PV2_Power).catch(this.error);
+                }
+                else
+                {
+                    this.setCapabilityValue('measure_power', data.PV_Power).catch(this.error);
+                }
 
-                if (data.Total_Generation > 0)
+                if (this.hasCapability('meter_power.today'))
+                {
+                    this.setCapabilityValue('meter_power.today', data.Daily_Production).catch(this.error);
+                }
+
+                if (this.hasCapability('meter_power') && data.Total_Generation > 0)
                 {
                     this.setCapabilityValue('meter_power', data.Total_Generation).catch(this.error);
                 }

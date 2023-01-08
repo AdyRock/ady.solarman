@@ -13,8 +13,54 @@ class GridDevice extends LanDevice
     async onInit()
     {
         await super.onInit();
-
         this.log('GridDevice has been initialized');
+    }
+
+    checkCapabilities(serial)
+    {
+        const inverter = this.homey.app.getInverter(serial);
+        if (inverter)
+        {
+            for (const group of inverter.inverter.parameter_definition.parameters)
+            {
+                if (group.group === 'grid')
+                {
+                    if (this.hasCapability('meter_power.today_import'))
+                    {
+                        if (!group.items.find(element => element.name === 'Import_Today'))
+                        {
+                            this.removeCapability('meter_power.today_import');
+                        }
+                    }
+
+                    if (this.hasCapability('meter_power.today_export'))
+                    {
+                        if (!group.items.find(element => element.name === 'Export_Today'))
+                        {
+                            this.removeCapability('meter_power.today_export');
+                        }
+                    }
+                    
+                    if (this.hasCapability('meter_power.total_import'))
+                    {
+                        if (!group.items.find(element => element.name === 'Total_Import'))
+                        {
+                            this.removeCapability('meter_power.total_import');
+                        }
+                    }
+                    
+                    if (this.hasCapability('meter_power.total_export'))
+                    {
+                        if (!group.items.find(element => element.name === 'Total_Export'))
+                        {
+                            this.removeCapability('meter_power.total_export');
+                        }
+                    }
+
+                    this.CapabilitiesChecked = true;                    
+                }
+            }
+        }
     }
 
     async updateLanDeviceValues(serial, data)
@@ -22,9 +68,15 @@ class GridDevice extends LanDevice
         try
         {
             const dd = this.getData();
-
+    
             if (serial === dd.id)
             {
+                if (!this.CapabilitiesChecked)
+                {
+                    this.checkCapabilities(dd.id);
+                    this.CapabilitiesChecked = true;
+                }
+
                 this.setAvailable();
 
                 this.setCapabilityValue('measure_power', -data.Grid_Power).catch(this.error);
@@ -40,19 +92,19 @@ class GridDevice extends LanDevice
                 {
                     this.setCapabilityValue('measure_frequency', data.Grid_Frequency).catch(this.error);
                 }
-                if (data.Import_Today > 0)
+                if (this.hasCapability('meter_power.today_import') && data.Import_Today > 0)
                 {
                     this.setCapabilityValue('meter_power.today_import', data.Import_Today).catch(this.error);
                 }
-                if (data.Export_Today > 0)
+                if (this.hasCapability('meter_power.today_export') && data.Export_Today > 0)
                 {
                     this.setCapabilityValue('meter_power.today_export', data.Export_Today).catch(this.error);
                 }
-                if (data.Total_Import > 0)
+                if (this.hasCapability('meter_power.total_import') && data.Total_Import > 0)
                 {
                     this.setCapabilityValue('meter_power.total_import', data.Total_Import).catch(this.error);
                 }
-                if (data.Total_Export > 0)
+                if (this.hasCapability('meter_power.total_export') && data.Total_Export > 0)
                 {
                     this.setCapabilityValue('meter_power.total_export', data.Total_Export).catch(this.error);
                 }
