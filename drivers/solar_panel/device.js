@@ -23,9 +23,11 @@ class SolarPanelDevice extends LanDevice
         const inverter = this.homey.app.getInverter(serial);
         if (inverter)
         {
+            this.CapabilitiesChecked = true;                    
+
             for (const group of inverter.inverter.parameter_definition.parameters)
             {
-                if (group.group === 'grid')
+                if (group.group === 'panel')
                 {
                     if (!group.items.find(element => element.name === 'PV_Power'))
                     {
@@ -39,16 +41,31 @@ class SolarPanelDevice extends LanDevice
                             this.removeCapability('meter_power.today');
                         }
                     }
+                    else
+                    {
+                        if (group.items.find(element => element.name === 'Daily_Production'))
+                        {
+                            this.addCapability('meter_power.today');
+                        }
+                    }
+                }
 
+                if (group.group === 'inverter')
+                {
                     if (this.hasCapability('meter_power'))
                     {
                         if (!group.items.find(element => element.name === 'Total_Generation'))
                         {
-                            this.removeCapability('meter_power.today');
+                            this.removeCapability('meter_power');
                         }
                     }
-
-                    this.CapabilitiesChecked = true;                    
+                    else
+                    {
+                        if (group.items.find(element => element.name === 'Total_Generation'))
+                        {
+                            this.addCapability('meter_power');
+                        }
+                    }
                 }
             }
         }
