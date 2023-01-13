@@ -19,5 +19,8 @@
   },
   "0.0.7": {
     "en": "Fix Total Power for lsw inverters. Added extra data to Summary / Inverter (Status, Fault code, Internal Temperature and Heatsinh temperature)."
+  },
+  "0.0.8": {
+    "en": "Prevent sending realtime update on Homey cloud."
   }
 }

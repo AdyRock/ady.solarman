@@ -315,7 +315,7 @@ class MyApp extends OAuth2App
                     this.diagLog = this.diagLog.substr(this.diagLog.length - 60000);
                 }
 
-                if (!this.cloudOnly)
+                if (this.homeyIP)
                 {
                     this.homey.api.realtime('logupdated', { log: this.diagLog });
                 }
