@@ -22,5 +22,8 @@
   },
   "0.0.8": {
     "en": "Prevent sending realtime update on Homey cloud."
+  },
+  "0.0.9": {
+    "en": "Fixed update issue for history data for cloud."
   }
 }

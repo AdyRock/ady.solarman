@@ -70,7 +70,7 @@ class StationDevice extends HubDevice
         }
 
         let nextInterval = await this.getHistoricalValues();
-        this.timerRealTime = this.homey.setTimeout(this.onHistoryPoll, nextInterval);
+        this.timerHistory = this.homey.setTimeout(this.onHistoryPoll, nextInterval);
     }
 
     async getRealTimeValues()
