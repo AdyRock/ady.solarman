@@ -164,7 +164,7 @@ class StationDevice extends HubDevice
         {
             let tz = this.homey.clock.getTimezone();
             let lang = this.homey.i18n.getLanguage();
-            let dateToConvert = new Date(date);
+            let dateToConvert = new Date(date * 1000);
 
             let date_string = dateToConvert.toLocaleString(lang, { timeZone: tz });   
             let d = new Date(date_string);
