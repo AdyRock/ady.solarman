@@ -25,5 +25,8 @@
   },
   "0.0.9": {
     "en": "Fixed update issue for cloud history data."
+  },
+  "0.0.10": {
+    "en": "Check for API limit and back off to allow recovery."
   }
 }
