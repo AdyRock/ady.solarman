@@ -3,7 +3,7 @@
 'use strict';
 
 const HubDevice = require('../hub_device');
-const MINIMUM_POLL_INTERVAL = 120; // in Seconds
+const MINIMUM_POLL_INTERVAL = 5 * 60; // 5 minutes in Seconds
 
 class StationDevice extends HubDevice
 {
@@ -80,7 +80,13 @@ class StationDevice extends HubDevice
             const data = await this._getHubDeviceValues();
             if (data)
             {
+                if (data.msg)
+                {
+                    throw new Error(data.msg);
+                }
+
                 this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(data)}`, 2);
+                this.setWarning("");
 
                 this.setAvailable();
                 const settings = this.getSettings();
@@ -114,6 +120,11 @@ class StationDevice extends HubDevice
         catch (err)
         {
             this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
+            if (err.message.search("insufficient allowance"))
+            {
+                this.setWarning("Rate limit");
+                return (120 * 60 * 1000);    // Back off for 2 hours
+            }
             this.setUnavailable(err.message);
         }
 
@@ -127,7 +138,13 @@ class StationDevice extends HubDevice
             const history = await this._getHubHistory();
             if (history)
             {
+                if (history.msg)
+                {
+                    throw new Error(history.msg);
+                }
+
                 this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(history)}`, 2);
+                this.setWarning("");
 
                 this.setCapabilityValue('meter_power.total_today', history.stationDataItems[1].generationValue).catch(this.error);
                 this.setCapabilityValue('meter_power.total_yesterday', history.stationDataItems[0].generationValue).catch(this.error);
@@ -152,6 +169,11 @@ class StationDevice extends HubDevice
         catch (err)
         {
             this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(err)}`, 0);
+            if (err.message.search("insufficient allowance"))
+            {
+                this.setWarning("Rate limit");
+                return (120 * 60 * 1000);    // Back off for 2 hours
+            }
         }
 
         return (MINIMUM_POLL_INTERVAL * 1000);

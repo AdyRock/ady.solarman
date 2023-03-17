@@ -292,7 +292,7 @@ class MyApp extends OAuth2App
 
     updateLog(newMessage, errorLevel = 1)
     {
-        this.log(newMessage);
+//        this.log(newMessage);
         if (errorLevel === 0)
         {
             this.error(newMessage);
