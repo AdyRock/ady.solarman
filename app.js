@@ -58,10 +58,6 @@ class MyApp extends OAuth2App
         // Callback for app settings changed
         this.homey.settings.on('set', async function settingChanged(setting) {});
 
-        this.onHubPoll = this.onHubPoll.bind(this);
-        this.hubDevices = 0;
-        this.timerHubID = null;
-
         this.lanSensors = [];
         this.lanSensorTimer = null;
 
@@ -408,35 +404,6 @@ class MyApp extends OAuth2App
             this.homey.clearTimeout(this.timerHubID);
             this.timerHubID = null;
         }
-    }
-
-    async onHubPoll()
-    {
-        if (this.timerHubID)
-        {
-            this.homey.clearTimeout(this.timerHubID);
-            this.timerHubID = null;
-        }
-
-        const promises = [];
-
-        const drivers = this.homey.drivers.getDrivers();
-        for (const driver of Object.values(drivers))
-        {
-            const devices = driver.getDevices();
-            for (const device of Object.values(devices))
-            {
-                if (device.getHubDeviceValues)
-                {
-                    promises.push(device.getHubDeviceValues());
-                }
-            }
-        }
-
-        await Promise.all(promises);
-
-        let nextInterval = (MINIMUM_POLL_INTERVAL * 1000);
-        this.timerHubID = this.homey.setTimeout(this.onHubPoll, nextInterval);
     }
 }
 

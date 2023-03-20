@@ -51,25 +51,27 @@ class StationDevice extends HubDevice
 
     async onRealTimePoll()
     {
+        let nextInterval = MINIMUM_POLL_INTERVAL;
         if (this.timerRealTime)
         {
             this.homey.clearTimeout(this.timerRealTime);
             this.timerRealTime = null;
+            nextInterval = await this.getRealTimeValues();
         }
 
-        let nextInterval = await this.getRealTimeValues();
         this.timerRealTime = this.homey.setTimeout(this.onRealTimePoll, nextInterval);
     }
 
     async onHistoryPoll()
     {
+        let nextInterval = MINIMUM_POLL_INTERVAL + (Math.random() * (5 * 60 * 1000));
         if (this.timerHistory)
         {
             this.homey.clearTimeout(this.timerHistory);
             this.timerHistory = null;
+            nextInterval = await this.getHistoricalValues();
         }
 
-        let nextInterval = await this.getHistoricalValues();
         this.timerHistory = this.homey.setTimeout(this.onHistoryPoll, nextInterval);
     }
 
@@ -99,22 +101,8 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('measure_battery', data.batterySoc).catch(this.error);
                 this.setCapabilityValue('measure_update_time', this.convertDate(data.lastUpdateTime, settings)).catch(this.error);
 
-                if (data.lastUpdateTime)
-                {
-                    if (this.lastUpdateTime !== data.lastUpdateTime)
-                    {
-                        this.lastUpdateTime = data.lastUpdateTime; 
-
-                        let updateTime = new Date(data.lastUpdateTime * 1000);
-                        const minutes = updateTime.getMinutes() + 17;
-                        updateTime.setMinutes(minutes);
-                        const nextInterval = updateTime - new Date(Date.now());
-                        if (nextInterval >= (MINIMUM_POLL_INTERVAL * 1000))
-                        {
-                            return nextInterval;
-                        }
-                    }
-                }
+                // Update every 20 minutes
+                return  (20 * 60 * 1000);
             }
         }
         catch (err)
@@ -153,17 +141,8 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('meter_power.battery_discharge_today', history.stationDataItems[1].dischargeValue).catch(this.error);
                 this.setCapabilityValue('meter_power.battery_discharge_yesterday', history.stationDataItems[0].dischargeValue).catch(this.error);
         
-                let updateTime = new Date(Date.now());
-                const hours = updateTime.getHours() + 1;
-                updateTime.setHours(hours);
-                updateTime.setMinutes(0);
-                updateTime.setSeconds(0);
-
-                const nextInterval = updateTime - new Date(Date.now());
-                if (nextInterval >= (MINIMUM_POLL_INTERVAL * 1000))
-                {
-                    return nextInterval;
-                }
+                // Update once per hour
+                return (60 * 60 * 1000);
             }
         }
         catch (err)

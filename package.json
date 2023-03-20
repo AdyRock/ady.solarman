@@ -1,6 +1,6 @@
 {
     "name": "ady.solarman",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "Adds support to Homey for Solarman devices",
     "main": "app.js",
     "dependencies": {
