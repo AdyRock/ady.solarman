@@ -29,7 +29,7 @@
   "0.0.10": {
     "en": "Check for API limit and back off to allow recovery."
   },
-  "0.0.10": {
+  "0.0.11": {
     "en": "Fetch history once per hour but no longer on the hour to prevent all Homeys call the API at the same time."
   }
 }
