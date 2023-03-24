@@ -2,7 +2,7 @@
 
 'use strict';
 
-const { OAuth2Driver } = require('homey-oauth2app');
+const OAuth2Driver = require('../../lib/OAuth2Driver');
 
 class HubDriver extends OAuth2Driver
 {
@@ -15,7 +15,7 @@ class HubDriver extends OAuth2Driver
         {
             if (response.success !== true)
             {
-                throw (new Error('Failed to get station list'));
+                throw (new Error(`Failed to get station list: ${response.msg}`));
             }
 
             const searchData = response.stationList;

@@ -9,7 +9,7 @@ if (process.env.DEBUG === '1')
 }
 
 const Homey = require('homey');
-const { OAuth2App } = require('homey-oauth2app');
+const OAuth2App = require('./lib/OAuth2App');
 const SolarmanOAuth2Client = require('./lib/SolarmanOAuth2Client');
 const nodemailer = require('nodemailer');
 

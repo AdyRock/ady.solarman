@@ -2,7 +2,7 @@
 
 'use strict';
 
-const { OAuth2Device } = require('homey-oauth2app');
+const OAuth2Device = require('../../lib/OAuth2Device');
 
 class HubDevice extends OAuth2Device
 {
