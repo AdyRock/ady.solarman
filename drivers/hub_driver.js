@@ -2,7 +2,7 @@
 
 'use strict';
 
-const OAuth2Driver = require('../../lib/OAuth2Driver');
+const OAuth2Driver = require('../lib/OAuth2Driver');
 
 class HubDriver extends OAuth2Driver
 {
