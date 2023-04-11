@@ -134,12 +134,14 @@ class StationDevice extends HubDevice
                 this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(history)}`, 2);
                 this.setWarning("");
 
-                this.setCapabilityValue('meter_power.total_today', history.stationDataItems[1].generationValue).catch(this.error);
-                this.setCapabilityValue('meter_power.total_yesterday', history.stationDataItems[0].generationValue).catch(this.error);
-                this.setCapabilityValue('meter_power.battery_charge_today', history.stationDataItems[1].chargeValue).catch(this.error);
-                this.setCapabilityValue('meter_power.battery_charge_yesterday', history.stationDataItems[0].chargeValue).catch(this.error);
-                this.setCapabilityValue('meter_power.battery_discharge_today', history.stationDataItems[1].dischargeValue).catch(this.error);
-                this.setCapabilityValue('meter_power.battery_discharge_yesterday', history.stationDataItems[0].dischargeValue).catch(this.error);
+                let lastIdx = history.stationDataItems.length - 1;
+
+                this.setCapabilityValue('meter_power.total_today', history.stationDataItems[lastIdx].generationValue).catch(this.error);
+                this.setCapabilityValue('meter_power.total_yesterday', history.stationDataItems[lastIdx - 1].generationValue).catch(this.error);
+                this.setCapabilityValue('meter_power.battery_charge_today', history.stationDataItems[lastIdx].chargeValue).catch(this.error);
+                this.setCapabilityValue('meter_power.battery_charge_yesterday', history.stationDataItems[lastIdx - 1].chargeValue).catch(this.error);
+                this.setCapabilityValue('meter_power.battery_discharge_today', history.stationDataItems[lastIdx].dischargeValue).catch(this.error);
+                this.setCapabilityValue('meter_power.battery_discharge_yesterday', history.stationDataItems[lastIdx - 1].dischargeValue).catch(this.error);
         
                 // Update once per hour
                 return (60 * 60 * 1000);

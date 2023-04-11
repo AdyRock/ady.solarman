@@ -37,5 +37,8 @@
   },
   "1.0.1": {
     "en": "Fix path issue."
+  },
+  "1.0.2": {
+    "en": "Fix Today and Yesterday data on Cloud station."
   }
 }
