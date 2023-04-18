@@ -18,8 +18,8 @@
         "type": "node",
         "request": "attach",
         "restart": true,
-        "name": "Attach to Homey",
-        "address": "192.168.1.47",
+        "name": "Attach to Dev Homey",
+        "address": "192.168.1.56",
         "port": 9229,
         "localRoot": "${workspaceFolder}",
         "remoteRoot": "/"

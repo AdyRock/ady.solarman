@@ -108,7 +108,7 @@ class StationDevice extends HubDevice
         catch (err)
         {
             this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
-            if (err.message.search("insufficient allowance"))
+            if (err.message.search("insufficient allowance") != -1)
             {
                 this.setWarning("Rate limit");
                 return (120 * 60 * 1000);    // Back off for 2 hours
@@ -150,7 +150,7 @@ class StationDevice extends HubDevice
         catch (err)
         {
             this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(err)}`, 0);
-            if (err.message.search("insufficient allowance"))
+            if (err.message.search("insufficient allowance") != -1)
             {
                 this.setWarning("Rate limit");
                 return (120 * 60 * 1000);    // Back off for 2 hours

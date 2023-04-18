@@ -52,6 +52,8 @@ class HubDevice extends OAuth2Device
             const data = await this.oAuth2Client.getStationData(dd.id);
             return data;
         }
+
+        throw new Error('No OAuthClient defined');
     }
 
     async _getHubHistory()
@@ -62,6 +64,8 @@ class HubDevice extends OAuth2Device
             const data = await this.oAuth2Client.getStationHistory(dd.id);
             return data;
         }
+
+        throw new Error('No OAuthClient defined');
     }
 
 }

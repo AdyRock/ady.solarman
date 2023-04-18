@@ -25,6 +25,10 @@ class StationDriver extends HubDriver
         return this.getHUBDevices(oAuth2Client);
     }
 
+    onAuthorized(device)
+    {
+        device.onRealTimePoll();
+    }
 }
 
 module.exports = StationDriver;
