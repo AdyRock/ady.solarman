@@ -29,6 +29,7 @@ class StationDriver extends HubDriver
     {
         device.onRealTimePoll();
     }
+
 }
 
 module.exports = StationDriver;

@@ -3,6 +3,7 @@
 'use strict';
 
 const HubDevice = require('../hub_device');
+
 const MINIMUM_POLL_INTERVAL = 5 * 60; // 5 minutes in Seconds
 
 class StationDevice extends HubDevice
@@ -42,10 +43,10 @@ class StationDevice extends HubDevice
 
     async onSettings({ oldSettings, newSettings, changedKeys })
     {
-        if (changedKeys.indexOf("timeFormat") >= 0)
+        if (changedKeys.indexOf('timeFormat') >= 0)
         {
-            const update_time = this.getCapabilityValue('measure_update_time');
-            this.setCapabilityValue('measure_update_time', this.convertDate(update_time, newSettings)).catch(this.error);
+            const updateTime = this.getCapabilityValue('measure_update_time');
+            this.setCapabilityValue('measure_update_time', this.convertDate(updateTime, newSettings)).catch(this.error);
         }
     }
 
@@ -88,7 +89,7 @@ class StationDevice extends HubDevice
                 }
 
                 this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(data)}`, 2);
-                this.setWarning("");
+                this.setWarning('');
 
                 this.setAvailable();
                 const settings = this.getSettings();
@@ -102,16 +103,16 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('measure_update_time', this.convertDate(data.lastUpdateTime, settings)).catch(this.error);
 
                 // Update every 20 minutes
-                return  (20 * 60 * 1000);
+                return (20 * 60 * 1000);
             }
         }
         catch (err)
         {
             this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
-            if (err.message.search("insufficient allowance") != -1)
+            if (err.message.search('insufficient allowance') !== -1)
             {
-                this.setWarning("Rate limit");
-                return (120 * 60 * 1000);    // Back off for 2 hours
+                this.setWarning('Rate limit');
+                return (120 * 60 * 1000); // Back off for 2 hours
             }
             this.setUnavailable(err.message);
         }
@@ -132,9 +133,9 @@ class StationDevice extends HubDevice
                 }
 
                 this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(history)}`, 2);
-                this.setWarning("");
+                this.setWarning('');
 
-                let lastIdx = history.stationDataItems.length - 1;
+                const lastIdx = history.stationDataItems.length - 1;
 
                 this.setCapabilityValue('meter_power.total_today', history.stationDataItems[lastIdx].generationValue).catch(this.error);
                 this.setCapabilityValue('meter_power.total_yesterday', history.stationDataItems[lastIdx - 1].generationValue).catch(this.error);
@@ -142,7 +143,7 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('meter_power.battery_charge_yesterday', history.stationDataItems[lastIdx - 1].chargeValue).catch(this.error);
                 this.setCapabilityValue('meter_power.battery_discharge_today', history.stationDataItems[lastIdx].dischargeValue).catch(this.error);
                 this.setCapabilityValue('meter_power.battery_discharge_yesterday', history.stationDataItems[lastIdx - 1].dischargeValue).catch(this.error);
-        
+
                 // Update once per hour
                 return (60 * 60 * 1000);
             }
@@ -150,10 +151,10 @@ class StationDevice extends HubDevice
         catch (err)
         {
             this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(err)}`, 0);
-            if (err.message.search("insufficient allowance") != -1)
+            if (err.message.search('insufficient allowance') !== -1)
             {
-                this.setWarning("Rate limit");
-                return (120 * 60 * 1000);    // Back off for 2 hours
+                this.setWarning('Rate limit');
+                return (120 * 60 * 1000); // Back off for 2 hours
             }
         }
 
@@ -162,28 +163,28 @@ class StationDevice extends HubDevice
 
     convertDate(date, settings)
     {
-        var strDate = "";
+        let strDate = '';
         if (date)
         {
-            let tz = this.homey.clock.getTimezone();
-            let lang = this.homey.i18n.getLanguage();
-            let dateToConvert = new Date(date * 1000);
+            const tz = this.homey.clock.getTimezone();
+            const lang = this.homey.i18n.getLanguage();
+            const dateToConvert = new Date(date * 1000);
 
-            let date_string = dateToConvert.toLocaleString(lang, { timeZone: tz });   
-            let d = new Date(date_string);
+            const dateString = dateToConvert.toLocaleString(lang, { timeZone: tz });
+            const d = new Date(dateString);
 
-            if (settings.timeFormat == "mm_dd")
+            if (settings.timeFormat === 'mm_dd')
             {
-                let mins = d.getMinutes();
-                let dte = d.getDate();
-                let month = d.toLocaleString(lang, {month: 'short'});
-                strDate = d.getHours() + ":" + (mins < 10 ? "0" : "") + mins + " " + month + (dte < 10 ? " 0" : " ") + dte;
+                const mins = d.getMinutes();
+                const dte = d.getDate();
+                const month = d.toLocaleString(lang, { month: 'short' });
+                strDate = `${d.getHours()}:${mins < 10 ? '0' : ''}${mins} ${month}${dte < 10 ? ' 0' : ' '}${dte}`;
             }
-            else if (settings.timeFormat == "system")
+            else if (settings.timeFormat === 'system')
             {
                 strDate = d.toLocaleString();
             }
-            else if (settings.timeFormat == "time_stamp")
+            else if (settings.timeFormat === 'time_stamp')
             {
                 strDate = d.toJSON();
             }

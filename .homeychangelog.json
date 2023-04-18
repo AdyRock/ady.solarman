@@ -40,5 +40,8 @@
   },
   "1.0.2": {
     "en": "Fix Today and Yesterday data on Cloud station."
+  },
+  "1.1.0": {
+    "en": "Updated to new Solarman server URL. Fixed Repair option to allow authentication on the new server."
   }
 }
