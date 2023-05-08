@@ -43,5 +43,8 @@
   },
   "1.1.0": {
     "en": "Updated to new Solarman server URL. Fixed Repair option to allow authentication on the new server."
+  },
+  "1.1.1": {
+    "en": "Added support for displaying costs, with optional dual tarrif support."
   }
 }

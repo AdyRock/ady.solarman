@@ -9,16 +9,16 @@ if (process.env.DEBUG === '1')
 }
 
 const Homey = require('homey');
+const nodemailer = require('nodemailer');
 const OAuth2App = require('./lib/OAuth2App');
 const SolarmanOAuth2Client = require('./lib/SolarmanOAuth2Client');
-const nodemailer = require('nodemailer');
 
 const Scanner = require('./lib/scanner');
 const Sensor = require('./lib/sensor');
 
-const MINIMUM_POLL_INTERVAL = 120; // in Seconds
 class MyApp extends OAuth2App
 {
+
     static OAUTH2_CLIENT = SolarmanOAuth2Client; // Default: OAuth2Client
     static OAUTH2_DEBUG = true; // Default: false
     static OAUTH2_MULTI_SESSION = false; // Default: false
@@ -56,7 +56,7 @@ class MyApp extends OAuth2App
         this.getInverterData = this.getInverterData.bind(this);
 
         // Callback for app settings changed
-        this.homey.settings.on('set', async function settingChanged(setting) {});
+        // this.homey.settings.on('set', async function settingChanged(setting) {});
 
         this.lanSensors = [];
         this.lanSensorTimer = null;
@@ -67,7 +67,7 @@ class MyApp extends OAuth2App
             if (this.homeyIP)
             {
                 // Remove the port number
-                let ip = this.homeyIP.split(':');
+                const ip = this.homeyIP.split(':');
 
                 this.scanner = new Scanner(this.homey, ip[0]);
                 this.scanner.startScanning(this.scannerFoundADevice);
@@ -112,22 +112,21 @@ class MyApp extends OAuth2App
         {
             this.updateLog('Get Data');
 
-            for (let sensor of this.lanSensors)
+            for (const sensor of this.lanSensors)
             {
-                let result = await sensor.getStatistics();
+                const result = await sensor.getStatistics();
 
                 if (result !== null)
                 {
                     const serial = sensor.getSerial();
 
                     this.updateLog(`Inverter data: : ${serial}, ${this.varToString(result)}`);
-        
-                    const drivers = this.homey.drivers.getDrivers();
-                    for (const driver in drivers)
-                    {
-                        let devices = this.homey.drivers.getDriver(driver).getDevices();
 
-                        for (let device of devices)
+                    const drivers = this.homey.drivers.getDrivers();
+                    for (const driver of Object.values(drivers))
+                    {
+                        const devices = driver.getDevices();
+                        for (const device of Object.values(devices))
                         {
                             if (device.updateLanDeviceValues)
                             {
@@ -141,7 +140,7 @@ class MyApp extends OAuth2App
                     this.updateLog('No Data');
                 }
             }
-            
+
             this.lanSensorTimer = this.homey.setTimeout(async () =>
             {
                 this.getInverterData();
@@ -151,7 +150,7 @@ class MyApp extends OAuth2App
 
     async registerSensor(ip, serial)
     {
-        for (let sensor of this.lanSensors)
+        for (const sensor of this.lanSensors)
         {
             // Check if this one already registered
             if (sensor.getSerial() === serial)
@@ -175,12 +174,12 @@ class MyApp extends OAuth2App
         }
     }
 
-    async checkSensor( ip, serial, register, lookup_file )
+    async checkSensor(ip, serial, register, lookupFile)
     {
-        let sensor = new Sensor(serial, ip, 8899, 1, lookup_file);
+        const sensor = new Sensor(serial, ip, 8899, 1, lookupFile);
         try
         {
-            let frequency = await sensor.getRegisterValue(register, register, 3);
+            const frequency = await sensor.getRegisterValue(register, register, 3);
             if ((frequency < 4500) || (frequency > 6500))
             {
                 return null;
@@ -219,14 +218,14 @@ class MyApp extends OAuth2App
     {
         if (this.lanSensors.length > 0)
         {
-            let registerNumber = parseInt(register);
-            return await this.lanSensors[0].getRegisterValue(registerNumber, registerNumber, 3);
+            const registerNumber = parseInt(register, 10);
+            return this.lanSensors[0].getRegisterValue(registerNumber, registerNumber, 3);
         }
 
         return 'No inverter available';
     }
 
-    async onUninit() {}
+//    async onUninit() {}
 
     hashCode(s)
     {
@@ -252,7 +251,7 @@ class MyApp extends OAuth2App
                 const stack = source.stack.replace('/\\n/g', '\n');
                 return `${source.message}\n${stack}`;
             }
-            if (typeof(source) === 'object')
+            if (typeof (source) === 'object')
             {
                 const getCircularReplacer = () =>
                 {
@@ -273,7 +272,7 @@ class MyApp extends OAuth2App
 
                 return JSON.stringify(source, getCircularReplacer(), 2);
             }
-            if (typeof(source) === 'string')
+            if (typeof (source) === 'string')
             {
                 return source;
             }
@@ -313,7 +312,7 @@ class MyApp extends OAuth2App
 
                 if (this.homeyIP)
                 {
-                    this.homey.api.realtime('logupdated', { log: this.diagLog });
+                    this.homey.api.realtime('ady.solarman.logupdated', { log: this.diagLog });
                 }
             }
             catch (err)
@@ -355,7 +354,8 @@ class MyApp extends OAuth2App
                         // do not fail on invalid certs
                         rejectUnauthorized: false,
                     },
-                }, );
+                },
+);
 
                 // send mail with defined transport object
                 const info = await transporter.sendMail(
@@ -364,7 +364,8 @@ class MyApp extends OAuth2App
                     to: Homey.env.MAIL_RECIPIENT, // list of receivers
                     subject: `Sofar & Solarman ${body.logType} log (${Homey.manifest.version})`, // Subject line
                     text: logData, // plain text body
-                }, );
+                },
+);
 
                 this.updateLog(`Message sent: ${info.messageId}`);
                 // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -384,7 +385,7 @@ class MyApp extends OAuth2App
 
     async Delay(period)
     {
-        await new Promise(resolve => this.homey.setTimeout(resolve, period));
+        await new Promise((resolve) => this.homey.setTimeout(resolve, period));
     }
 
     registerHUBPolling()
@@ -405,6 +406,7 @@ class MyApp extends OAuth2App
             this.timerHubID = null;
         }
     }
+
 }
 
 module.exports = MyApp;
