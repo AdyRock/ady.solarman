@@ -102,8 +102,29 @@ class StationDevice extends HubDevice
                 this.setCapabilityValue('measure_battery', data.batterySoc).catch(this.error);
                 this.setCapabilityValue('measure_update_time', this.convertDate(data.lastUpdateTime, settings)).catch(this.error);
 
-                // Update every 20 minutes
-                return (20 * 60 * 1000);
+                if (data.DP1 && this.hasCapability('measure_power.pv1'))
+                {
+                    this.setCapabilityValue('measure_power.pv1', parseFloat(data.DP1.value)).catch(this.error);
+                    this.setCapabilityValue('measure_power.pv2', parseFloat(data.DP2.value)).catch(this.error);
+
+                    this.setCapabilityValue('measure_voltage.pv1', parseFloat(data.DV1.value)).catch(this.error);
+                    this.setCapabilityValue('measure_voltage.pv2', parseFloat(data.DV2.value)).catch(this.error);
+
+                    this.setCapabilityValue('measure_current.pv1', parseFloat(data.DC1.value)).catch(this.error);
+                    this.setCapabilityValue('measure_current.pv2', parseFloat(data.DC2.value)).catch(this.error);
+                }
+                else if (this.hasCapability('measure_power.pv1'))
+                {
+                    this.removeCapabilityValue('measure_power.pv1');
+                    this.removeCapabilityValue('measure_power.pv2');
+                    this.removeCapabilityValue('measure_voltage.pv1');
+                    this.removeCapabilityValue('measure_voltage.pv2');
+                    this.removeCapabilityValue('measure_current.pv1');
+                    this.removeCapabilityValue('measure_current.pv2');
+                }
+
+                // Update every 15 minutes
+                return (15 * 60 * 1000);
             }
         }
         catch (err)

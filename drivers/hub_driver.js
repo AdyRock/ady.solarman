@@ -13,31 +13,41 @@ class HubDriver extends OAuth2Driver
 
         if (response)
         {
+            this.log(response);
             if (response.success !== true)
             {
                 throw (new Error(`Failed to get station list: ${response.msg}`));
             }
 
             const searchData = response.stationList;
-            const devices = [];
+            const homeyDevices = [];
 
             // Create an array of devices
-            for (const device of searchData)
+            for (const station of searchData)
             {
+                let device = {};
+                const response2 = await oAuth2Client.getDevices(station.id);
+                if (response2)
+                {
+                    this.log(response2);
+                    device = response2.deviceListItems.find((item) => item.deviceType === 'INVERTER');
+                }
+
                 let data = {};
                 data = {
-                    id: device.id
+                    id: station.id,
+                    device,
                 };
 
                 // Add this device to the table
-                devices.push(
+                homeyDevices.push(
                     {
-                        name: device.name,
+                        name: station.name,
                         data,
                     },
                 );
             }
-            return devices;
+            return homeyDevices;
         }
 
         throw (new Error('HTTPS Error: Nothing returned'));

@@ -49,7 +49,26 @@ class HubDevice extends OAuth2Device
         const dd = this.getData();
         if (this.oAuth2Client)
         {
-            const data = await this.oAuth2Client.getStationData(dd.id);
+            let data = await this.oAuth2Client.getStationData(dd.id);
+
+            if (dd.device.deviceSn)
+            {
+                const data2 = await this.oAuth2Client.getDeviceData(dd.device.deviceSn);
+
+                const convertArrayToObject = (array, key) => {
+                    const initialValue = {};
+                    return array.reduce((obj, item) => {
+                      return {
+                        ...obj,
+                        [item[key]]: item,
+                      };
+                    }, initialValue);
+                  };
+
+                  const data3 = convertArrayToObject(data2.dataList, 'key');
+                  this.log(data3);
+                  data = { ...data, ...data3 };
+            }
             return data;
         }
 
