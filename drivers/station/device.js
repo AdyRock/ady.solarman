@@ -29,6 +29,13 @@ class StationDevice extends HubDevice
             this.addCapability('meter_power.total_yesterday');
         }
 
+        if ((this.hasCapability('measure_power.pv1')) && (!this.hasCapability('measure_temperature.invert')))
+        {
+            this.addCapability('measure_temperature.invert');
+            this.addCapability('measure_temperature.battery');
+            this.addCapability('measure_temperature.radiator');
+        }
+
         await super.onInit();
 
         this.lastUpdateTime = 0;
@@ -112,15 +119,22 @@ class StationDevice extends HubDevice
 
                     this.setCapabilityValue('measure_current.pv1', parseFloat(data.DC1.value)).catch(this.error);
                     this.setCapabilityValue('measure_current.pv2', parseFloat(data.DC2.value)).catch(this.error);
+
+                    this.setCapabilityValue('measure_temperature.invert', parseFloat(data.INV_T0.value)).catch(this.error);
+                    this.setCapabilityValue('measure_temperature.battery', parseFloat(data.B_T1.value)).catch(this.error);
+                    this.setCapabilityValue('measure_temperature.radiator', parseFloat(data.T_RDT1.value)).catch(this.error);
                 }
                 else if (this.hasCapability('measure_power.pv1'))
                 {
-                    this.removeCapabilityValue('measure_power.pv1');
-                    this.removeCapabilityValue('measure_power.pv2');
-                    this.removeCapabilityValue('measure_voltage.pv1');
-                    this.removeCapabilityValue('measure_voltage.pv2');
-                    this.removeCapabilityValue('measure_current.pv1');
-                    this.removeCapabilityValue('measure_current.pv2');
+                    this.removeCapabilityValue('measure_power.pv1').catch(this.error);
+                    this.removeCapabilityValue('measure_power.pv2').catch(this.error);
+                    this.removeCapabilityValue('measure_voltage.pv1').catch(this.error);
+                    this.removeCapabilityValue('measure_voltage.pv2').catch(this.error);
+                    this.removeCapabilityValue('measure_current.pv1').catch(this.error);
+                    this.removeCapabilityValue('measure_current.pv2').catch(this.error);
+                    this.removeCapabilityValue('measure_temperature.invert').catch(this.error);
+                    this.removeCapabilityValue('measure_temperature.battery').catch(this.error);
+                    this.removeCapabilityValue('measure_temperature.radiator').catch(this.error);
                 }
 
                 // Update every 15 minutes

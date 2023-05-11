@@ -22,7 +22,10 @@
         "measure_voltage.pv1",
         "measure_voltage.pv2",
         "measure_current.pv1",
-        "measure_current.pv2"
+        "measure_current.pv2",
+        "measure_temperature.invert",
+        "measure_temperature.battery",
+        "measure_temperature.radiator"
     ],
     "capabilitiesOptions": {
         "measure_power.solar": {
@@ -75,6 +78,15 @@
         },
         "measure_current.pv2": {
             "title": {"en": "PV2 current"}
+        },
+        "measure_temperature.invert": {
+            "title": {"en": "Inverter Temperature"}
+        },
+        "measure_temperature.battery": {
+            "title": {"en": "Battery Temperature"}
+        },
+        "measure_temperature.radiator": {
+            "title": {"en": "Radiator Temperature"}
         }
     },
     "energy": {

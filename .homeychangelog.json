@@ -46,5 +46,8 @@
   },
   "1.1.1": {
     "en": "Added support for displaying costs, with optional dual tarrif support. Added PV data to cloud station. Added map for G3hyd inverters."
+  },
+  "1.1.2": {
+    "en": "Fixed an issue caused by the new Station features with an old device. Add temperatures to cloud station"
   }
 }

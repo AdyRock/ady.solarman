@@ -165,10 +165,10 @@ class MyApp extends OAuth2App
         let sensor = await this.checkSensor(ip, serial, 14, 'sofar_lsw3');
         if (sensor === null)
         {
-            sensor = await this.checkSensor(ip, serial, 524, 'sofar_hy_es');
+            sensor = await this.checkSensor(ip, serial, 1156, 'sofar_g3hyd');
             if (sensor === null)
             {
-                sensor = await this.checkSensor(ip, serial, 1156, 'sofar_g3hyd');
+                sensor = await this.checkSensor(ip, serial, 524, 'sofar_hy_es');
             }
         }
 

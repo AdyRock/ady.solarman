@@ -51,7 +51,7 @@ class HubDevice extends OAuth2Device
         {
             let data = await this.oAuth2Client.getStationData(dd.id);
 
-            if (dd.device.deviceSn)
+            if (dd.device)
             {
                 const data2 = await this.oAuth2Client.getDeviceData(dd.device.deviceSn);
 
