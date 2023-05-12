@@ -55,5 +55,8 @@
   },
   "1.1.4": {
     "en": "Fixed issue caused by missing data from API."
+  },
+  "1.1.5": {
+    "en": "Added diagnostics message for checking local connection."
   }
 }
