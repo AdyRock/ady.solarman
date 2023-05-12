@@ -52,5 +52,8 @@
   },
   "1.1.3": {
     "en": "Fixed another issue caused by the new Station features with an old device."
+  },
+  "1.1.4": {
+    "en": "Fixed issue caused by missing data from API."
   }
 }

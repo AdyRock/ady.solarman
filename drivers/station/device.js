@@ -111,18 +111,18 @@ class StationDevice extends HubDevice
 
                 if (data.DP1 && this.hasCapability('measure_power.pv1'))
                 {
-                    this.setCapabilityValue('measure_power.pv1', parseFloat(data.DP1.value)).catch(this.error);
-                    this.setCapabilityValue('measure_power.pv2', parseFloat(data.DP2.value)).catch(this.error);
+                    this.setCapabilityValue('measure_power.pv1', data.DP1 ? parseFloat(data.DP1.value) : null).catch(this.error);
+                    this.setCapabilityValue('measure_power.pv2', data.DP2 ? parseFloat(data.DP2.value) : null).catch(this.error);
 
-                    this.setCapabilityValue('measure_voltage.pv1', parseFloat(data.DV1.value)).catch(this.error);
-                    this.setCapabilityValue('measure_voltage.pv2', parseFloat(data.DV2.value)).catch(this.error);
+                    this.setCapabilityValue('measure_voltage.pv1', data.DV1 ? parseFloat(data.DV1.value) : null).catch(this.error);
+                    this.setCapabilityValue('measure_voltage.pv2', data.DV2 ? parseFloat(data.DV2.value) : null).catch(this.error);
 
-                    this.setCapabilityValue('measure_current.pv1', parseFloat(data.DC1.value)).catch(this.error);
-                    this.setCapabilityValue('measure_current.pv2', parseFloat(data.DC2.value)).catch(this.error);
+                    this.setCapabilityValue('measure_current.pv1', data.DC1 ? parseFloat(data.DC1.value) : null).catch(this.error);
+                    this.setCapabilityValue('measure_current.pv2', data.DC2 ? parseFloat(data.DC2.value) : null).catch(this.error);
 
-                    this.setCapabilityValue('measure_temperature.invert', parseFloat(data.INV_T0.value)).catch(this.error);
-                    this.setCapabilityValue('measure_temperature.battery', parseFloat(data.B_T1.value)).catch(this.error);
-                    this.setCapabilityValue('measure_temperature.radiator', parseFloat(data.T_RDT1.value)).catch(this.error);
+                    this.setCapabilityValue('measure_temperature.invert', data.INV_T0 ? parseFloat(data.INV_T0.value) : null).catch(this.error);
+                    this.setCapabilityValue('measure_temperature.battery', data.B_T1 ? parseFloat(data.B_T1.value) : null).catch(this.error);
+                    this.setCapabilityValue('measure_temperature.radiator', data.T_RDT1 ? parseFloat(data.T_RDT1.value) : null).catch(this.error);
                 }
                 else if (this.hasCapability('measure_power.pv1'))
                 {
