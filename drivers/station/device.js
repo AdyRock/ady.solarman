@@ -126,15 +126,15 @@ class StationDevice extends HubDevice
                 }
                 else if (this.hasCapability('measure_power.pv1'))
                 {
-                    this.removeCapabilityValue('measure_power.pv1').catch(this.error);
-                    this.removeCapabilityValue('measure_power.pv2').catch(this.error);
-                    this.removeCapabilityValue('measure_voltage.pv1').catch(this.error);
-                    this.removeCapabilityValue('measure_voltage.pv2').catch(this.error);
-                    this.removeCapabilityValue('measure_current.pv1').catch(this.error);
-                    this.removeCapabilityValue('measure_current.pv2').catch(this.error);
-                    this.removeCapabilityValue('measure_temperature.invert').catch(this.error);
-                    this.removeCapabilityValue('measure_temperature.battery').catch(this.error);
-                    this.removeCapabilityValue('measure_temperature.radiator').catch(this.error);
+                    this.removeCapability('measure_power.pv1').catch(this.error);
+                    this.removeCapability('measure_power.pv2').catch(this.error);
+                    this.removeCapability('measure_voltage.pv1').catch(this.error);
+                    this.removeCapability('measure_voltage.pv2').catch(this.error);
+                    this.removeCapability('measure_current.pv1').catch(this.error);
+                    this.removeCapability('measure_current.pv2').catch(this.error);
+                    this.removeCapability('measure_temperature.invert').catch(this.error);
+                    this.removeCapability('measure_temperature.battery').catch(this.error);
+                    this.removeCapability('measure_temperature.radiator').catch(this.error);
                 }
 
                 // Update every 15 minutes

@@ -49,5 +49,8 @@
   },
   "1.1.2": {
     "en": "Fixed an issue caused by the new Station features with an old device. Add temperatures to cloud station"
+  },
+  "1.1.3": {
+    "en": "Fixed another issue caused by the new Station features with an old device."
   }
 }
