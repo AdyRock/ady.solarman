@@ -162,18 +162,26 @@ class MyApp extends OAuth2App
         }
 
         // Try to read the grid frequency address
+        this.updateLog('Checking register 14 for grid frequency:', 0);
         let sensor = await this.checkSensor(ip, serial, 14, 'sofar_lsw3');
         if (sensor === null)
         {
+            this.updateLog('Returned null.\n\nChecking register 1156 for grid frequency:', 0);
             sensor = await this.checkSensor(ip, serial, 1156, 'sofar_g3hyd');
             if (sensor === null)
             {
+                this.updateLog('Returned null.\n\nChecking register 524 for grid frequency:', 0);
                 sensor = await this.checkSensor(ip, serial, 524, 'sofar_hy_es');
+                if (sensor === null)
+                {
+                    this.updateLog('Returned null.\n\nNo suitable inverters found', 0);
+                }
             }
         }
 
         if (sensor)
         {
+            this.updateLog('Found inverter', 0);
             this.lanSensors.push(sensor);
         }
     }
@@ -183,11 +191,13 @@ class MyApp extends OAuth2App
         const sensor = new Sensor(serial, ip, 8899, 1, lookupFile);
         try
         {
-            const frequency = await sensor.getRegisterValue(register, register, 3);
+            const frequency = await sensor.getRegisterValue(register);
             if ((frequency < 4500) || (frequency > 6500))
             {
+                this.updateLog(`Frequency ${frequency / 100} is not valid`, 0);
                 return null;
             }
+            this.updateLog(`Frequency ${frequency / 100} is good`, 0);
         }
         catch (err)
         {
