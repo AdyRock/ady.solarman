@@ -10,6 +10,7 @@ class LanDriver extends Driver
     async getLanDevices(Type)
     {
         const inverters = this.homey.app.getDiscoveredInverters();
+        this.homey.app.updateLog(`Inverters: ${this.homey.app.varToString(inverters)}`, 2);
 
         if (inverters.length > 0)
         {
@@ -27,13 +28,14 @@ class LanDriver extends Driver
                             id: device.inverter_sn,
                             type: Type,
                         };
-        
+
                         // Add this device to the table
                         devices.push(
-                        {
-                            name: device.inverter_sn.toString(),
-                            data,
-                        }, );        
+                            {
+                                name: device.inverter_sn.toString(),
+                                data,
+                            },
+                        );
                     }
                 }
             }

@@ -58,5 +58,8 @@
   },
   "1.1.5": {
     "en": "Added diagnostics message for checking local connection."
+  },
+  "1.1.6": {
+    "en": "Fix up map for G3hyd inverters."
   }
 }

@@ -23,30 +23,51 @@ class SolarPanelDevice extends LanDevice
         const inverter = this.homey.app.getInverter(serial);
         if (inverter)
         {
-            this.CapabilitiesChecked = true;                    
+            this.CapabilitiesChecked = true;
 
             for (const group of inverter.inverter.parameter_definition.parameters)
             {
                 if (group.group === 'panel')
                 {
-                    if (!group.items.find(element => element.name === 'PV_Power'))
+                    if (!group.items.find((element) => element.name === 'PV_Power'))
                     {
                         this.sumPV1_PV2 = true;
                     }
 
                     if (this.hasCapability('meter_power.today'))
                     {
-                        if (!group.items.find(element => element.name === 'Daily_Production'))
+                        if (!group.items.find((element) => element.name === 'Daily_Production'))
                         {
                             this.removeCapability('meter_power.today');
                         }
                     }
-                    else
+                    else if (group.items.find((element) => element.name === 'Daily_Production'))
                     {
-                        if (group.items.find(element => element.name === 'Daily_Production'))
+                        this.addCapability('meter_power.today');
+                    }
+
+                    if (this.hasCapability('measure_generation_time'))
+                    {
+                        if (!group.items.find((element) => element.name === 'Generation_Time_Today'))
                         {
-                            this.addCapability('meter_power.today');
+                            this.removeCapability('measure_generation_time');
                         }
+                    }
+                    else if (group.items.find((element) => element.name === 'Generation_Time_Today'))
+                    {
+                        this.addCapability('measure_generation_time');
+                    }
+
+                    if (this.hasCapability('measure_generation_time_total'))
+                    {
+                        if (!group.items.find((element) => element.name === 'Total_Generation'))
+                        {
+                            this.removeCapability('measure_generation_time_total');
+                        }
+                    }
+                    else if (group.items.find((element) => element.name === 'Total_Generation'))
+                    {
+                        this.addCapability('measure_generation_time_total');
                     }
                 }
 
@@ -54,18 +75,16 @@ class SolarPanelDevice extends LanDevice
                 {
                     if (this.hasCapability('meter_power'))
                     {
-                        if (!group.items.find(element => element.name === 'Total_Generation'))
+                        if (!group.items.find((element) => element.name === 'Total_Generation'))
                         {
                             this.removeCapability('meter_power');
                         }
                     }
                     else
-                    {
-                        if (group.items.find(element => element.name === 'Total_Generation'))
+                    if (group.items.find((element) => element.name === 'Total_Generation'))
                         {
                             this.addCapability('meter_power');
                         }
-                    }
                 }
             }
         }
@@ -112,8 +131,15 @@ class SolarPanelDevice extends LanDevice
                 this.setCapabilityValue('measure_power.pv2', data.PV2_Power).catch(this.error);
                 this.setCapabilityValue('measure_voltage.pv2', data.PV2_Voltage).catch(this.error);
                 this.setCapabilityValue('measure_current.pv2', data.PV2_Current).catch(this.error);
-                this.setCapabilityValue('measure_generation_time', data.Generation_Time_Today).catch(this.error);
-                this.setCapabilityValue('measure_generation_time_total', data.Generation_Time_Total).catch(this.error);
+
+                if (this.hasCapability('measure_generation_time'))
+                {
+                    this.setCapabilityValue('measure_generation_time', data.Generation_Time_Today).catch(this.error);
+                }
+                if (this.hasCapability('measure_generation_time_total'))
+                {
+                    this.setCapabilityValue('measure_generation_time_total', data.Generation_Time_Total).catch(this.error);
+                }
             }
         }
         catch (err)
