@@ -61,5 +61,8 @@
   },
   "1.1.6": {
     "en": "Fix up map for G3hyd inverters."
+  },
+  "1.1.7": {
+    "en": "Fix time check for low rate."
   }
 }

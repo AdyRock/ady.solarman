@@ -13,6 +13,12 @@ class GridDevice extends LanDevice
     async onInit()
     {
         await super.onInit();
+
+        this.startHour = this.getSetting('start_hour');
+        this.startMin = this.getSetting('start_minute');
+        this.endHour = this.getSetting('end_hour');
+        this.endMin = this.getSetting('end_minute');
+
         if (this.hasCapability('meter_power.today_import'))
         {
             if (!this.hasCapability('meter_cost.today_import') && (this.getSetting('standard') > 0))
@@ -68,6 +74,23 @@ class GridDevice extends LanDevice
                 this.removeCapability('meter_power.low_rate_import').catch(this.error);
                 this.removeCapability('meter_cost.low_rate_import').catch(this.error);
             }
+        }
+
+        if (changedKeys.indexOf('start_hour') >= 0)
+        {
+            this.startHour = newSettings.start_hour;
+        }
+        if (changedKeys.indexOf('startMin') >= 0)
+        {
+            this.startMin = newSettings.start_minute;
+        }
+        if (changedKeys.indexOf('endHour') >= 0)
+        {
+            this.endHour = newSettings.end_hour;
+        }
+        if (changedKeys.indexOf('endMin') >= 0)
+        {
+            this.endMin = newSettings.end_minute;
         }
 
         if (changedKeys.indexOf('cost_units') >= 0)
@@ -175,7 +198,7 @@ class GridDevice extends LanDevice
                 }
 
                 // Import with cost and dual rate option
-                if (this.hasCapability('meter_power.today_import') && data.Import_Today > 0)
+                if (this.hasCapability('meter_power.today_import') && (data.Import_Today > 0))
                 {
                     this.setCapabilityValue('meter_power.today_import', data.Import_Today).catch(this.error);
 
@@ -186,8 +209,10 @@ class GridDevice extends LanDevice
                         const nowTime = this.convertTZ(new Date(), tz);
                         let standardCost = 0;
                         let lowCost = 0;
+                        const nowHour = nowTime.getHours();
+                        const nowMinute = nowTime.getMinutes();
 
-                        if ((nowTime.getHours() < this.getSetting('start_hour')) && (nowTime.getMinutes() < this.getSetting('start_minute')))
+                        if ((nowHour < this.startHour) || ((nowHour === this.startHour) && (nowMinute < this.startMin)))
                         {
                             // Before the low rate period so just record import power up to start
                             if (this.startPower !== data.Import_Today)
@@ -211,15 +236,16 @@ class GridDevice extends LanDevice
                                 }
                             }
                         }
-                        else if ((nowTime.getHours() < this.getSetting('end_hour')) && (nowTime.getMinutes() < this.getSetting('end_minute')))
+                        else if ((nowHour < this.endHour) || ((nowHour === this.endHour) && (nowMinute < this.endMin)))
                         {
                             // In the low rate period
-                            if ((this.getSetting('start_hour') === 0) && (this.getSetting('start_minute') === 0) && (this.startPower !== 0))
+                            if ((this.startHour === 0) && (this.startMin === 0) && (this.startPower !== 0))
                             {
                                 // Trap for low rate starting a midnight to clear startPower
                                 this.startPower = 0;
                                 this.setStoreValue('startPower', this.startPower);
-                                this.setCapabilityValue('meter_power.today_import', 0).catch(this.error);
+                                this.setCapabilityValue('meter_cost.hi_rate_import', 0).catch(this.error);
+                                this.setCapabilityValue('meter_power.hi_rate_import', 0).catch(this.error);
                             }
 
                             if (this.endPower !== data.Import_Today)
@@ -235,6 +261,9 @@ class GridDevice extends LanDevice
                                 {
                                     lowCost = lowToday * unitPrice;
                                     this.setCapabilityValue('meter_cost.low_rate_import', lowCost).catch(this.error);
+
+                                    // Total cost for dual tarrif is cost at low rate + cost at standard rate
+                                    this.setCapabilityValue('meter_cost.today_import', standardCost + lowCost).catch(this.error);
                                 }
                             }
                         }
@@ -259,11 +288,12 @@ class GridDevice extends LanDevice
                                 {
                                     lowCost = lowToday * unitPrice;
                                     this.setCapabilityValue('meter_cost.low_rate_import', lowCost).catch(this.error);
+
+                                    // Total cost for dual tarrif is cost at low rate + cost at standard rate
+                                    this.setCapabilityValue('meter_cost.today_import', standardCost + lowCost).catch(this.error);
                                 }
                             }
                         }
-                        // Total cost for dual tarrif is cost at low rate + cost at standard rate
-                        this.setCapabilityValue('meter_cost.today_import', standardCost + lowCost).catch(this.error);
                     }
                     else
                     {
