@@ -16,7 +16,9 @@
         "meter_cost.low_rate_import",
         "meter_power.today_export",
         "meter_power.total_import",
-        "meter_power.total_export"
+        "meter_power.total_export",
+        "meter_cost.today_export",
+        "meter_cost.today_total"
     ],
     "capabilitiesOptions": {
         "meter_power.today_import": {
@@ -45,6 +47,12 @@
         },
         "meter_power.total_export": {
             "title": {"en": "Export Total"}
+        },
+        "meter_cost.today_export": {
+            "title": {"en": "Export Cost Today"}
+        },
+        "meter_cost.today_total": {
+            "title": {"en": "Total Cost Today"}
         }
     },
     "energy": {
@@ -153,6 +161,18 @@
                     "min": 0.01,
                     "hint": {
                         "en": "The low tarrif cost (in the specified Currency unit) per kW/H."
+                    }
+                },
+                {
+                    "id": "export",
+                    "type": "number",
+                    "label": {
+                        "en": "Export Rate Tarrif"
+                    },
+                    "value": 0.0,
+                    "min": 0,
+                    "hint": {
+                        "en": "The export tarrif cost (in the specified Currency unit) per kW/H."
                     }
                 }
             ]

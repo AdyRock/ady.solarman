@@ -64,5 +64,8 @@
   },
   "1.1.7": {
     "en": "Fix time check for low rate."
+  },
+  "1.1.8": {
+    "en": "Check for less that one days history. Added Export tariff to settings so export cost today and total cost today can be provided."
   }
 }

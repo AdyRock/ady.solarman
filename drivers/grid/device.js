@@ -19,6 +19,13 @@ class GridDevice extends LanDevice
         this.endHour = this.getSetting('end_hour');
         this.endMin = this.getSetting('end_minute');
 
+        if (this.getSetting('export') === undefined)
+        {
+            this.setSettings({
+                export: 0,
+            });
+        }
+
         if (this.hasCapability('meter_power.today_import'))
         {
             if (!this.hasCapability('meter_cost.today_import') && (this.getSetting('standard') > 0))
@@ -37,6 +44,12 @@ class GridDevice extends LanDevice
                     this.addCapability('meter_cost.low_rate_import').catch(this.error);
                 }
             }
+        }
+
+        if (this.hasCapability('meter_cost.today_export') && (this.getSetting('export') === 0))
+        {
+            this.removeCapability('meter_cost.today_export').catch(this.error);
+            this.removeCapability('meter_cost.today_total').catch(this.error);
         }
 
         this.startPower = this.getStoreValue('startPower');
@@ -92,21 +105,51 @@ class GridDevice extends LanDevice
         {
             this.endMin = newSettings.end_minute;
         }
+        if (changedKeys.indexOf('export') >= 0)
+        {
+            this.addCapability('meter_cost.today_export').catch(this.error);
+            this.addCapability('meter_cost.today_total').catch(this.error);
+        }
+        else
+        {
+            this.removeCapability('meter_cost.today_export').catch(this.error);
+            this.removeCapability('meter_cost.today_total').catch(this.error);
+        }
 
         if (changedKeys.indexOf('cost_units') >= 0)
         {
             // Update the of all the cost capabilities
             let options = this.getCapabilityOptions('meter_cost.today_import');
-            options.units = newSettings.cost_units;
-            this.setCapabilityOptions('meter_cost.today_import', options);
-
+            if (this.options)
+            {
+                options.units = newSettings.cost_units;
+                this.setCapabilityOptions('meter_cost.today_import', options).catch(this.error);
+            }
             options = this.getCapabilityOptions('meter_cost.hi_rate_import');
-            options.units = newSettings.cost_units;
-            this.setCapabilityOptions('meter_cost.hi_rate_import', options);
-
+            if (this.options)
+            {
+                options.units = newSettings.cost_units;
+                this.setCapabilityOptions('meter_cost.hi_rate_import', options).catch(this.error);
+            }
             options = this.getCapabilityOptions('meter_cost.low_rate_import');
-            options.units = newSettings.cost_units;
-            this.setCapabilityOptions('meter_cost.low_rate_import', options);
+            if (this.options)
+            {
+                options.units = newSettings.cost_units;
+                this.setCapabilityOptions('meter_cost.low_rate_import', options).catch(this.error);
+            }
+            options = this.getCapabilityOptions('meter_cost.today_export');
+            if (this.options)
+            {
+                options.units = newSettings.cost_units;
+                this.setCapabilityOptions('meter_cost.today_export', options).catch(this.error);
+            }
+
+            options = this.getCapabilityOptions('meter_cost.today_total');
+            if (this.options)
+            {
+                options.units = newSettings.cost_units;
+                this.setCapabilityOptions('meter_cost.today_total', options).catch(this.error);
+            }
         }
     }
 
@@ -123,12 +166,12 @@ class GridDevice extends LanDevice
                     {
                         if (!group.items.find((element) => element.name === 'Import_Today'))
                         {
-                            this.removeCapability('meter_power.today_import');
-                            this.removeCapability('meter_power.hi_rate_import');
-                            this.removeCapability('meter_cost.hi_rate_import');
-                            this.removeCapability('meter_power.low_rate_import');
-                            this.removeCapability('meter_cost.low_rate_import');
-                            this.removeCapability('meter_cost');
+                            this.removeCapability('meter_power.today_import').catch(this.error);
+                            this.removeCapability('meter_power.hi_rate_import').catch(this.error);
+                            this.removeCapability('meter_cost.hi_rate_import').catch(this.error);
+                            this.removeCapability('meter_power.low_rate_import').catch(this.error);
+                            this.removeCapability('meter_cost.low_rate_import').catch(this.error);
+                            this.removeCapability('meter_cost').catch(this.error);
                         }
                     }
 
@@ -136,7 +179,9 @@ class GridDevice extends LanDevice
                     {
                         if (!group.items.find((element) => element.name === 'Export_Today'))
                         {
-                            this.removeCapability('meter_power.today_export');
+                            this.removeCapability('meter_power.today_export').catch(this.error);
+                            this.removeCapability('meter_cost.today_export').catch(this.error);
+                            this.removeCapability('meter_cost.today_total').catch(this.error);
                         }
                     }
 
@@ -144,7 +189,7 @@ class GridDevice extends LanDevice
                     {
                         if (!group.items.find((element) => element.name === 'Total_Import'))
                         {
-                            this.removeCapability('meter_power.total_import');
+                            this.removeCapability('meter_power.total_import').catch(this.error);
                         }
                     }
 
@@ -152,7 +197,7 @@ class GridDevice extends LanDevice
                     {
                         if (!group.items.find((element) => element.name === 'Total_Export'))
                         {
-                            this.removeCapability('meter_power.total_export');
+                            this.removeCapability('meter_power.total_export').catch(this.error);
                         }
                     }
 
@@ -305,6 +350,20 @@ class GridDevice extends LanDevice
                 if (this.hasCapability('meter_power.today_export') && data.Export_Today > 0)
                 {
                     this.setCapabilityValue('meter_power.today_export', data.Export_Today).catch(this.error);
+
+                    if (this.hasCapability('meter_cost.today_export') && data.Export_Today > 0)
+                    {
+                        const exportPrice = this.getSetting('export');
+                        if (exportPrice > 0)
+                        {
+                            // Export cost is -(export today * export rate)
+                            const exportCost = -(data.Export_Today * exportPrice);
+                            this.setCapabilityValue('meter_cost.today_export', exportCost).catch(this.error);
+
+                            const totalCost = this.getCapabilityValue('meter_cost.today_import') + exportCost;
+                            this.setCapabilityValue('meter_cost.today_total', totalCost).catch(this.error);
+                        }
+                    }
                 }
                 if (this.hasCapability('meter_power.total_import') && data.Total_Import > 0)
                 {
