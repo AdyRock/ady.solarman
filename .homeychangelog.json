@@ -67,5 +67,8 @@
   },
   "1.1.8": {
     "en": "Check for less that one days history. Added Export tariff to settings so export cost today and total cost today can be provided."
+  },
+  "1.1.9": {
+    "en": "Fix refresh token. Fix export, standard rate import and cost today during low rate period."
   }
 }
