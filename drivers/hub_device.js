@@ -50,6 +50,10 @@ class HubDevice extends OAuth2Device
         if (this.oAuth2Client)
         {
             let data = await this.oAuth2Client.getStationData(dd.id);
+            if (data.success === false)
+            {
+                throw new Error(data.msg);
+            }
 
             if (dd.device)
             {

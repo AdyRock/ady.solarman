@@ -312,7 +312,7 @@ class GridDevice extends LanDevice
                                 }
                             }
                         }
-                        else
+//                        else
                         {
                             // After low rate period
                             const standardToday = data.Import_Today - (this.endPower - this.startPower);
@@ -347,11 +347,11 @@ class GridDevice extends LanDevice
                     }
                 }
 
-                if (this.hasCapability('meter_power.today_export') && data.Export_Today > 0)
+                if (this.hasCapability('meter_power.today_export') && data.Export_Today >= 0)
                 {
                     this.setCapabilityValue('meter_power.today_export', data.Export_Today).catch(this.error);
 
-                    if (this.hasCapability('meter_cost.today_export') && data.Export_Today > 0)
+                    if (this.hasCapability('meter_cost.today_export'))
                     {
                         const exportPrice = this.getSetting('export');
                         if (exportPrice > 0)
