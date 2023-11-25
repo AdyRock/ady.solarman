@@ -378,7 +378,7 @@ class GridDevice extends LanDevice
         catch (err)
         {
             this.homey.app.updateLog(`getLanDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
-            this.setUnavailable(err.message);
+            this.setUnavailable(err.message).catch(this.error);
         }
     }
 

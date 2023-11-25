@@ -44,7 +44,7 @@ class BatteryDevice extends LanDevice
         catch (err)
         {
             this.homey.app.updateLog(`updateLanDeviceValues: : ${this.homey.app.varToString(err)}`);
-            this.setUnavailable(err.message);
+            this.setUnavailable(err.message).catch(this.error);
         }
     }
 

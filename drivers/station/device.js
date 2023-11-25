@@ -96,7 +96,7 @@ class StationDevice extends HubDevice
                 }
 
                 this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(data)}`, 2);
-                this.setWarning('');
+                this.setWarning(null).catch(this.error);
 
                 this.setAvailable();
                 const settings = this.getSettings();
@@ -146,10 +146,10 @@ class StationDevice extends HubDevice
             this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
             if (err.message.search('insufficient allowance') !== -1)
             {
-                this.setWarning('Rate limit');
+                this.setWarning('Rate limit').catch(this.error);
                 return (120 * 60 * 1000); // Back off for 2 hours
             }
-            this.setUnavailable(err.message);
+            this.setUnavailable(err.message).catch(this.err);
         }
 
         return (MINIMUM_POLL_INTERVAL * 1000);
@@ -168,7 +168,7 @@ class StationDevice extends HubDevice
                 }
 
                 this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(history)}`, 2);
-                this.setWarning('');
+                this.setWarning(null).catch(this.error);
 
                 const lastIdx = history.stationDataItems.length - 1;
 
@@ -195,7 +195,7 @@ class StationDevice extends HubDevice
             this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(err)}`, 0);
             if (err.message.search('insufficient allowance') !== -1)
             {
-                this.setWarning('Rate limit');
+                this.setWarning('Rate limit').catch(this.error);
                 return (120 * 60 * 1000); // Back off for 2 hours
             }
         }

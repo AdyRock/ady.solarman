@@ -70,5 +70,8 @@
   },
   "1.1.9": {
     "en": "Fix refresh token. Fix export, standard rate import and cost today during low rate period."
+  },
+  "1.1.10": {
+    "en": "Catch Homey errors."
   }
 }
