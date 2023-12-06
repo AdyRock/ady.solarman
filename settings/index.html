@@ -49,41 +49,44 @@
 
     <!-- LOG PAGE -->
     <div id="log" class="tabcontent">
-        <fieldset>
-            <p data-i18n="settings.diagnosticsLog">
-            </p>
             <div class="field row">
-                <p>
-                    <label for="logEnabled"><span data-i18n="settings.logEnabled"></span></label>
-                    <input id="logEnabled" type="checkbox" value="logEnabled" />
-                    &nbsp &nbsp &nbsp
-                    <label for="logNetEnabled"><span data-i18n="settings.logNetEnabled"></span></label>
-                    <input id="logNetEnabled" type="checkbox" value="logNetEnabled" />
-                </p>
+                <label class="homey-form-checkbox">
+                    <input class="homey-form-checkbox-input" id="logEnabled" type="checkbox" value="logEnabled" />
+                    <span class="homey-form-checkbox-checkmark"></span>
+                    <span class="homey-form-checkbox-text"><span data-i18n="settings.logEnabled"></span></span>
+                </label>
+
+                <label class="homey-form-checkbox">
+                    <input class="homey-form-checkbox-input" id="logNetEnabled" type="checkbox" value="logNetEnabled" />
+                    <span class="homey-form-checkbox-checkmark"></span>
+                    <span class="homey-form-checkbox-text"><span data-i18n="settings.logNetEnabled"></span></span>
+                </label>
             </div>
-        </fieldset>
-        <fieldset>
-            <p><button id="clearDiagLog"><span data-i18n="settings.clearLog"></span></button> <button id="sendDiagLog"><span data-i18n="settings.sendLog"></span></button></p>
+        <div class="field row">
+            <label class="homey-form-label"  for="email"><span data-i18n="settings.email"></span></label>
+            <input class="homey-form-input" id="email" type="text" value="" />
+            <P></P>
+        </div>
+            <p><button class="homey-button-secondary-shadow" id="clearDiagLog"><span data-i18n="settings.clearLog"></span></button> <button class="homey-button-secondary-shadow" id="sendDiagLog"><span data-i18n="settings.sendLog"></span></button></p>
             <div class="field row">
-                <textarea id="diagLog"></textarea>
+                <label class="homey-form-label"  for="diagLog"><span data-i18n="settings.logData"></span></label>
+                <textarea id="diagLog" style="white-space: nowrap;"></textarea>
             </div>
-        </fieldset>
     </div>
 
     <!--SEND COMMAND PAGE -->
     <div id="send" class="tabcontent">
-        <fieldset>
             <h1>For debug use only</h1>
-            <p>
                 <div class="field row">
-                    <label for="commandData">"Read Register"</label>
-                    <input id="commandData" type="text" value="" /><button id="sendCmd" style="background-color:#0f9e16;color:white;margin:5px 20px 5px 5px;">Send</button><button id="clearSend" style="background-color:#a5510d;color:white;margin:5px 20px 5px 5px;">Clear Log</button>
+                    <label class="homey-form-label"  for="commandData"><span data-i18n="settings.readRegister"></span></label>
+                    <input class="homey-form-input" id="commandData" type="text" value="" />
+                    <P></P>
+                    <p><button class="homey-button-secondary-shadow" id="sendCmd"><span data-i18n="settings.sendCommand"></span></button> <button class="homey-button-secondary-shadow" id="clearSend"><span data-i18n="settings.clearResponse"></span></button></p>
                 </div>
-            </p>
             <div class="field row">
-                <textarea id="sendResponse"></textarea>
+                <label class="homey-form-label"  for="sendResponse"><span data-i18n="settings.response"></span></label>
+                <textarea id="sendResponse" style="white-space: nowrap;"></textarea>
             </div>
-        </fieldset>
     </div>
 
     <script type="text/javascript">
@@ -212,12 +215,15 @@
 
             sendCmdElement.addEventListener('click', function(e)
             {
+                waitCursor(true);
+
                 Homey.api('POST', '/sendCmd/',
                 {
                     command: commandDataElement.value,
                     notify: true
                 }, function(err, result)
                 {
+                    waitCursor(false);
                     if (err)
                     {
                         return Homey.alert(err);
@@ -287,7 +293,7 @@
 
                 // Make the log text area fill the page
                 diagLogElement.setAttribute('cols', diagLogElement.parentElement.clientWidth / 8);
-                diagLogElement.style.height = (window.innerHeight - diagLogElement.offsetTop - 20) + 'px';
+                diagLogElement.style.height = (window.innerHeight - diagLogElement.offsetTop - 30) + 'px';
             }
             else if (tabPage == 'send')
             {
@@ -297,7 +303,7 @@
                     sendResponseElement.value = sendResponse ? JSON.stringify(sendResponse, null, 2) : "";
                 });
                 // Make the simulator text box fill the page
-                sendResponseElement.setAttribute('cols', sendResponseElement.parentElement.clientWidth / 8);
+                sendResponseElement.setAttribute('cols', sendResponseElement.parentElement.clientWidth / 7.9);
                 sendResponseElement.style.height = (window.innerHeight - sendResponseElement.offsetTop - 40) + 'px';
             }
         }

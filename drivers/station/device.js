@@ -4,7 +4,7 @@
 
 const HubDevice = require('../hub_device');
 
-const MINIMUM_POLL_INTERVAL = 5 * 60; // 5 minutes in Seconds
+const MINIMUM_POLL_INTERVAL = 15 * 60; // 15 minutes in Seconds
 
 class StationDevice extends HubDevice
 {
@@ -59,7 +59,7 @@ class StationDevice extends HubDevice
 
     async onRealTimePoll()
     {
-        let nextInterval = MINIMUM_POLL_INTERVAL;
+        let nextInterval = MINIMUM_POLL_INTERVAL + (Math.random() * (30 * 1000));
         if (this.timerRealTime)
         {
             this.homey.clearTimeout(this.timerRealTime);
@@ -138,15 +138,15 @@ class StationDevice extends HubDevice
                 }
 
                 // Update every 15 minutes
-                return (15 * 60 * 1000);
+                return (MINIMUM_POLL_INTERVAL * 1000);
             }
         }
         catch (err)
         {
-            this.homey.app.updateLog(`getHubDeviceValues: : ${this.homey.app.varToString(err)}`, 0);
+            this.homey.app.updateLog(`getHubDeviceValues: ${err.message}`, 0);
             if (err.message.search('insufficient allowance') !== -1)
             {
-                this.setWarning('Rate limit').catch(this.error);
+                this.setUnavailable('Rate limit').catch(this.error);
                 return (120 * 60 * 1000); // Back off for 2 hours
             }
             this.setUnavailable(err.message).catch(this.err);
@@ -192,7 +192,7 @@ class StationDevice extends HubDevice
         }
         catch (err)
         {
-            this.homey.app.updateLog(`getHistoricalValues: : ${this.homey.app.varToString(err)}`, 0);
+            this.homey.app.updateLog(`getHistoricalValues: : ${err.message}`, 0);
             if (err.message.search('insufficient allowance') !== -1)
             {
                 this.setWarning('Rate limit').catch(this.error);

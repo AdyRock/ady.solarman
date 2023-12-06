@@ -14,6 +14,12 @@
         "logSendFailed": "Failed to send after 5 attempts.\nThe error messages are at the end of the log.",
         "password": "Password",
         "missingUsername": "You need to enter your Solarman Username",
-        "missingPassword": "You need to enter your Solarman Password"
+        "missingPassword": "You need to enter your Solarman Password",
+        "email": "Email Address or Forum id (Required if you want me to respond)",
+        "readRegister": "Register at Address",
+        "sendCommand": "Read Reg.",
+        "clearResponse": "Clear Resp.",
+        "response": "Response",
+        "logData": "Log Data"
     }
 }
