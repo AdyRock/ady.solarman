@@ -76,5 +76,8 @@
   },
   "1.1.11": {
     "en": "Block connections for two hours when the call rate has been exceeded."
+  },
+  "1.1.12": {
+    "en": "Fix missing username issue."
   }
 }
